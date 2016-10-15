@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+					    http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.5.xsd"
+	xmlns:util="http://www.springframework.org/schema/util">
+	
+	<bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+    	<property name="staticMethod" value="qla.modules.actions.Actions.setActions"/>
+    	<property name="arguments">
+        	<ref bean="ws-actions"/>
+   		</property>
+	</bean>
+	
+	<util:map id="ws-actions" map-class="java.util.HashMap">
+		<entry key="selectFolder" value-ref="selectFolderAction"/>
+		<entry key="getConfig" value-ref="getConfigAction"/>
+		<entry key="saveProperty" value-ref="savePropertyAction"/>
+		<entry key="DEFINE_THREAD_ACTION" value-ref="DEFINE_THREAD_ACTION"/>
+		<entry key="ANALYSE_LOGFILE_ACTION" value-ref="ANALYSE_LOGFILE_ACTION"/>
+		<entry key="SIGNAL_INFO_ACTION" value-ref="SIGNAL_INFO_ACTION"/>
+		<entry key="OPEN_IN_NOTEPAD_ACTION" value-ref="OPEN_IN_NOTEPAD_ACTION"/>
+		<entry key="DELETE_FILES_ACTION" value-ref="DELETE_FILES_ACTION"/>
+		<entry key="READ_SERVERS_ACTION" value-ref="READ_SERVERS_ACTION"/>
+		<entry key="RUN_PUTTY_ACTION" value-ref="RUN_PUTTY_ACTION"/>
+		<entry key="EXECUTE_SSH_COMMAND_ACTION" value-ref="EXECUTE_SSH_COMMAND_ACTION"/>
+		<entry key="LOAD_EXCEPTIONS_ACTION" value-ref="LOAD_EXCEPTIONS_ACTION"/>
+		<entry key="GET_LOG_INFO_ACTION" value-ref="GET_LOG_INFO_ACTION"/>
+	</util:map>
+	
+	<bean id="selectFolderAction" class="qla.modules.actions.FolderChooserAction">
+		<constructor-arg type="java.lang.Class" value="qla.modules.actions.models.FolderChooserActionRQ"></constructor-arg>
+	</bean>
+	
+	<bean id="getConfigAction" class="qla.modules.actions.GetConfigurationAction">
+		<constructor-arg type="java.lang.Class" value="qla.modules.actions.models.GetConfigurationActionRQ"></constructor-arg>
+	</bean>
+	
+	<bean id="savePropertyAction" class="qla.modules.actions.SavePropertyAction">
+		<constructor-arg type="java.lang.Class" value="qla.modules.actions.models.SavePropertyActionRQ"></constructor-arg>
+	</bean>
+	<bean id="DEFINE_THREAD_ACTION" class="qla.modules.actions.DefineThreadByJSessionIdAction">
+		<constructor-arg type="java.lang.Class" value="qla.modules.actions.models.DefineThreadByJSessionIdActionRQ"></constructor-arg>
+	</bean>
+	
+	<bean id="ANALYSE_LOGFILE_ACTION" class="qla.modules.actions.AnalyseLogAction">
+		<constructor-arg type="java.lang.Class" value="qla.modules.actions.models.AnalyseLogActionRQ"></constructor-arg>
+		<property name="logProcessor" ref="tdpLogProcessor"></property>
+	</bean>
+	
+	<bean id="SIGNAL_INFO_ACTION" class="qla.modules.actions.SignalInfoAction">
+		<constructor-arg type="java.lang.Class" value="qla.modules.actions.models.SignalInfoActionRQ"></constructor-arg>
+	</bean>
+	<bean id="OPEN_IN_NOTEPAD_ACTION" class="qla.modules.actions.OpenNotepadAction">
+		<constructor-arg type="java.lang.Class" value="qla.modules.actions.models.OpenNotepadActionRQ"></constructor-arg>
+	</bean>
+	
+	<bean id="DELETE_FILES_ACTION" class="qla.modules.actions.DeleteFilesAction">
+		<constructor-arg type="java.lang.Class" value="qla.modules.actions.models.DeleteFilesActionRQ"></constructor-arg>
+	</bean>
+	
+	<bean id="READ_SERVERS_ACTION" class="qla.modules.actions.GetServersAction">
+		<constructor-arg type="java.lang.Class" value="qla.modules.actions.models.GetServersActionRQ"></constructor-arg>
+	</bean>
+	<bean id="RUN_PUTTY_ACTION" class="qla.modules.actions.RunPuttyAction">
+		<constructor-arg type="java.lang.Class" value="qla.modules.actions.models.RunPuttyActionRQ"></constructor-arg>
+	</bean>
+	
+	<bean id="EXECUTE_SSH_COMMAND_ACTION" class="qla.modules.actions.ExecuteSSHCommandAction">
+		<constructor-arg type="java.lang.Class" value="qla.modules.actions.models.ExecuteSSHCommandActionRQ"></constructor-arg>
+	</bean>
+	
+	<bean id="LOAD_EXCEPTIONS_ACTION" class="qla.modules.actions.LoadExceptionsAction">
+		<constructor-arg type="java.lang.Class" value="qla.modules.actions.models.LoadExceptionsActionRQ"></constructor-arg>
+	</bean>
+	
+	<bean id="GET_LOG_INFO_ACTION" class="qla.modules.actions.GetLogInfoAction">
+		<constructor-arg type="java.lang.Class" value="qla.modules.actions.models.GetLogInfoActionRQ"></constructor-arg>
+	</bean>
+	
+	<bean id="LogConfiguration" class="qla.modules.log.LogConfiguration">
+		<property name="encoding" value="UTF-8"></property>
+		<property name="datePattern" value="[0-9]{4}-[0-9]{2}-[0-9]{2}"></property>
+		<property name="timePattern" value="[0-9]{2}:[0-9]{2}:[0-9]{2},[0-9]{3}"></property>
+		<property name="loglevelPattern" value="\[(DEBUG|INFO |ERROR|WARN )\]"></property>
+		<property name="fullClassnamePattern" value="\[([a-zA-Z_0-9]{1,}[.]){1,10}[a-zA-Z_0-9]{1,}\]"></property>
+		<property name="jsessionIdPattern" value="\[[A-Z0-9]{32}\]"></property>
+		<property name="threadPattern" value="\[(?![A-Z0-9]{32})[a-zA-Z_0-9-.\)\(:=\]\[,#]{6,}( CPU_HEAVY){0,1}\]"></property>
+		<property name="conversationPattern" value="\[([a-zA-Z_0-9]{1,}[.]){1,10}[a-zA-Z_0-9]{1,}\]"></property>
+		<property name="newLoglinePatern" value="^[0-9]{4}-[0-9]{2}-[0-9]{2}.*"></property>
+	</bean>
+	
+	<bean id="tdpLoglineProcessor" class="qla.modules.log.processors.SignalLoglineProcessor">
+		<property name="conditionPattern" value=".*(XML Request|XML Response):.*"></property>
+		<property name="extractPattern" value="&lt;.*&gt;$"></property>
+		<property name="signalNamePattern" value="&lt;(\w*?) "></property>
+		<property name="warningsPattern" value="&lt;(ns[\d]:)?Warnings.{1,}&lt;/(ns[\d]:)?Warnings&gt;"></property>
+		<property name="errorsPattern" value="(&lt;(ns[\d]:)?Errors&gt;.{1,}&lt;/(ns[\d]:)?Errors&gt;|&lt;Error .*/&gt;)"></property>
+		<property name="system" value="TDP"></property>
+		<property name="actorPattern" value=".*[.](\w*?)\]"></property>
+		<property name="contentType" value="XML"></property>
+		<property name="requestPattern" value=".*XML Request:.*"></property>
+		<property name="responsePattern" value=".*XML Response:.*"></property>
+		<property name="incomingSignalName" value="Request"></property>
+		<property name="outgoingSignalName" value="Response"></property>
+	</bean>
+	
+	<bean id="CUILoglineProcessor" class="qla.modules.log.processors.SignalLoglineProcessor">
+		<property name="conditionPattern" value=".*\[TDP_WEB_SERVICE\] (XML Request sent to servant|XML Response received from servant).*"></property>
+		<property name="extractPattern" value="&lt;.*&gt;$"></property>
+		<property name="signalNamePattern" value="&lt;(\w*?) "></property>
+		<property name="warningsPattern" value="&lt;(ns[\d]:)?Warnings.{1,}&lt;/(ns[\d]:)?Warnings&gt;"></property>
+		<property name="errorsPattern" value="(&lt;(ns[\d]:)?Errors&gt;.{1,}&lt;/(ns[\d]:)?Errors&gt;|&lt;Error .*/&gt;)"></property>
+		<property name="system" value="CUI"></property>
+		<property name="actorPattern" value="servant \[(\w*?)\] "></property>
+		<property name="contentType" value="XML"></property>
+		<property name="requestPattern" value=".*XML Request.*"></property>
+		<property name="responsePattern" value=".*XML Response.*"></property>
+		<property name="incomingSignalName" value="Request"></property>
+		<property name="outgoingSignalName" value="Response"></property>
+	</bean>
+	
+	<bean id="sabreLoglineProcessor" class="qla.modules.log.processors.SignalLoglineProcessor">
+		<property name="conditionPattern" value=".*(Sending to Sabre host|Response from Sabre host) :.*"></property>
+		<property name="extractPattern" value="&lt;.*&gt;$"></property>
+		<property name="signalNamePattern" value="&lt;eb:Action&gt;(\w*?)&lt;/eb:Action&gt;"></property>
+		<property name="warningsPattern" value="&lt;(ns[\d]:)?Warnings.{1,}&lt;/(ns[\d]:)?Warnings&gt;"></property>
+		<property name="errorsPattern" value="(&lt;(ns[\d]:)?Errors&gt;.{1,}&lt;/(ns[\d]:)?Errors&gt;|&lt;Error .*/&gt;)"></property>
+		<property name="system" value="SABRE"></property>
+		<property name="actorPattern" value="&lt;eb:Service.*&gt;(\w*?)&lt;/eb:Service&gt;"></property>
+		<property name="contentType" value="XML"></property>
+		<property name="requestPattern" value=".*Sending to Sabre host :.*"></property>
+		<property name="responsePattern" value=".*Response from Sabre host :.*"></property>
+		<property name="incomingSignalName" value="Request"></property>
+		<property name="outgoingSignalName" value="Response"></property>
+	</bean>
+	
+	
+	<bean id="aceLoglineProcessor" class="qla.modules.log.processors.SignalLoglineProcessor">
+		<property name="conditionPattern" value=".*(Sending Message to ACE|Received From ACE):.*"></property>
+		<property name="extractPattern" value="&lt;.*&gt;$"></property>
+		<property name="signalNamePattern" value=".*&lt;/(\w*?)&gt;.{1,10}&lt;/ACORD&gt;"></property>
+		<property name="system" value="ACE"></property>
+		<property name="contentType" value="XML"></property>
+		<property name="requestPattern" value=".*Sending Message to ACE:.*"></property>
+		<property name="responsePattern" value=".*Received From ACE:.*"></property>
+		<property name="incomingSignalName" value="Request"></property>
+		<property name="outgoingSignalName" value="Response"></property>
+	</bean>
+	
+	<bean id="exceptionLoglineProcessor" class="qla.modules.log.processors.ExceptionLoglineProcessor">
+		<property name="conditionPattern" value=".*\n((\w*?)[.]){1,20}(\w*?)(Exception|Error).*"></property>
+		<property name="exceptionNamePattern" value="\n{1,2}([\w.]*)(\n|:)"></property>
+	</bean>
+	
+	<bean id="astralProcessor" class="qla.modules.log.processors.MultiLoglineProcessor">
+		<property name="conditionPattern" value=".*(DATA REQUEST START|RECEIVED MESSAGE START).*"></property>
+		<property name="extractPattern" value="MatipHandlerTypeAConv] (.*?)$"></property>
+		<property name="system" value="ASTRAL"></property>
+		<property name="contentType" value="TEXT"></property>
+		<property name="requestPattern" value=".*DATA REQUEST START.*"></property>
+		<property name="responsePattern" value=".*RECEIVED MESSAGE START.*"></property>
+		<property name="incomingSignalName" value="Request"></property>
+		<property name="outgoingSignalName" value="Response"></property>
+		<property name="endPattern" value=".*(DATA REQUEST END|RECEIVED MESSAGE END).*"></property>
+		<property name="defaultSignalName" value="ASTRAL"></property>
+	</bean>
+	
+	<bean id="viatorProcessor" class="qla.modules.log.processors.MultiLoglineProcessor">
+		<property name="conditionPattern" value=".*ViatorHttpConnection\] (Viator path|Raw response from Host).*"></property>
+		<property name="extractPattern" value=" (\{.*\})$"></property>
+		<property name="signalNamePattern" value="Viator path: (.*)$"></property>
+		<property name="system" value="VIATOR"></property>
+		<property name="contentType" value="JSON"></property>
+		<property name="requestPattern" value=".*Viator path:.*"></property>
+		<property name="responsePattern" value=".*Raw response from Host:.*"></property>
+		<property name="incomingSignalName" value="Request"></property>
+		<property name="outgoingSignalName" value="Response"></property>
+		<property name="endPattern" value=".*(Post-request for Viator|Raw response from Host).*"></property>
+		<property name="defaultSignalName" value="VIATOR"></property>
+	</bean>
+	
+	<bean id="tdpLogProcessor" class="qla.modules.log.processors.TDPLogProcessor">
+		<property name="logConfiguration" ref="LogConfiguration"></property>
+		<property name="lineProcessors">
+			<list>
+				<ref bean="tdpLoglineProcessor"/>
+				<ref bean="sabreLoglineProcessor"/>
+				<ref bean="exceptionLoglineProcessor"/>
+				<ref bean="aceLoglineProcessor"/>
+				<ref bean="viatorProcessor"/>
+				<ref bean="astralProcessor"/>
+				<ref bean="CUILoglineProcessor"/>
+			</list>
+		</property>
+	</bean>
+</beans>

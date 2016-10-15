@@ -1,0 +1,36 @@
+.servant-name-box{
+  position: absolute;
+  border: 1px solid black;
+  padding: 5px;
+  font-size: 13px;
+}
+.vertical-line{
+  position: absolute;
+  width: 1px;
+  background-color: black;
+}
+.vertical-line:hover{
+  background-color: darkblue;
+}
+.relation{
+  position: absolute;
+  height: 8px;
+}
+polyline{
+  stroke: black;
+  stroke-width: 1;
+  fill: none;
+}
+.relation-name-container{
+  background-color: white;
+  position: absolute;
+  font-size: 12px;
+}
+.icon{
+  position: absolute;
+  font-size: 10px;
+}
+
+.error-icon{
+  color: red;
+}

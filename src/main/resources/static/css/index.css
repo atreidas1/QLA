@@ -1,0 +1,242 @@
+html, body, .tab-pane, #main-tab-pane{
+  height: 100%;
+}
+.selected-file{
+  background-color: #e2e2e2;
+}
+.custom-input{
+  padding: 0px;
+  padding-left: 5px;
+  height: 20px;
+}
+#diagrammSource{
+  width: 300px;
+  height: 400px;
+}
+
+.tab-pane {
+padding-top: 55px
+}
+.divider {
+  height: 10px;
+}
+.left-panel{
+  float: left;
+  width: 310px;
+  padding-left: 5px;
+  padding-bottom: 10px;
+  padding-right: 5px;
+  background-color: #eee;
+  overflow-y: auto;
+  padding-top: 5px;
+  border: 1px solid darkgray;
+}
+
+.files-box {
+  height: 250px;
+  border: 1px solid darkgray;
+  overflow-y: auto;
+  margin-bottom: 10px;
+  margin-top: 3px;
+}
+.logfile{
+  //font-size: 40px;
+  padding: 2px;
+}
+.log-file-name{
+  font-size: 15px;
+  margin-top: -40px;
+  margin-left: -10px;
+  margin-right: -10px;
+  text-align: center;
+  text-overflow: clip;
+}
+.file-icon-box {
+  font-size: 15px;
+  margin-right: 3px;
+  display: inline-block;
+}
+.bold {
+font-weight: bold;
+}
+
+#connection-status-disconnected {
+  width: 30px;
+  background-color: red;
+}
+
+#connection-status-connected {
+  width: 30px;
+  background-color: green;
+}
+.setting-box{
+  margin: 2px;
+  padding: 5px;
+  background-color: #e8e8e8;
+  border: 1px solid #ccc;
+  box-shadow: 0px 0px 1px 1px rgba(153,142,153,1);
+}
+
+#alert-box{
+  position: fixed;
+  width: 300px;
+  right: 0px;
+  top: 50px;
+  z-index: 99;
+}
+
+#diagram {
+  position: relative;
+  float: left;
+  margin-left: 325px;
+}
+
+.server-box {
+  display: inline-block;
+  width: 350px;
+}
+
+#rqrs-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+#rqrs-table tbody td{
+  border: 1px solid darkgray;
+}
+
+#requestsAndResponses{
+  padding-left: 10px;
+  padding-right: 4px;
+  overflow-y: auto;
+}
+
+.rq-rs-container{
+  background-color: #eeeeee;
+  border: 1px solid darkgray;
+  padding: 2px 5px;
+}
+#rq-rs-table-heder {
+  background-color: #dadada;
+}
+#rq-rs-table-heder td{
+  padding: 3px;
+}
+
+.action-cell{
+  text-align: center;
+}
+.action-cell i{
+  cursor: pointer;
+}
+.rq-rs-table-row{
+  padding: 3px;
+}
+.rqrs-name {
+  cursor: pointer;
+}
+.error-row {
+ background-color:  #ffc8c4;
+}
+.warning-row{
+  background-color: #ffeb3b;
+}
+
+
+
+#analyse-result-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+#analyse-result-table td{
+  border: 1px solid darkgray;
+  padding-left: 2px;
+}
+
+#analyse-result-table thead{
+background-color: #dadada;
+}
+
+.id{
+  width: 50px;
+}
+
+.line-number{
+  width: 100px;
+}
+.system{
+  width: 60px;
+}
+.system input {
+  width: 55px;
+}
+
+.actions{
+  width: 220px;
+}
+.results{
+  background-color: #dadada;
+  margin-bottom: 5px;
+  padding: 5px;
+  border: 1px solid darkgray;
+}
+.info-box, .message, message-value {
+  display: inline-block;
+}
+.info-box {
+  margin-right: 10px;
+}
+
+#signal-source{
+  width: 100%
+}
+.open-in-notepad-button{
+  float: right;
+  cursor: pointer;
+}
+.exception-name-container {
+  display: block;
+  background-color: #f5f5f5;
+  padding: 3px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-weight: bold;
+}
+
+.exception-ln:hover{
+  text-decoration: underline;
+}
+
+.hover-underline:hover{
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+#logname {
+  color: #3F51B5;
+}
+
+@media screen and (min-width: 992px) {
+  .modal-lg {
+    width: 1500px; /* New width for large modal */
+  }
+}
+#progress-line{
+  transition: 0.2s;
+}
+#for-copy{
+  display: none;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+.search-input{
+  margin-bottom: -6px;
+  width: 200px;
+}
+
+.search-input input{
+  height: 22px;
+}
