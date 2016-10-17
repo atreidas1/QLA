@@ -66,8 +66,8 @@ var templates = {
     '<td>{{id}}</td>'+
     '<td><span class="hover-underline" onclick="commands.showLineInLog({{lineNumber}})">{{lineNumber}}</span></td>'+
     '<td><span class="bold signal-name hover-underline" onclick="commands.readSignalSource({{id}})">{{signalName}}</span>'+
-      '<i style="display: {{displayWarning}};" class="glyphicon glyphicon-warning-sign text-warning" title="Show warnings." onclick="commands.readSignalWarnings({{id}})"></i>'+
-      '<i style="display: {{displayError}};" class="glyphicon glyphicon-exclamation-sign text-danger" title="Show errors." onclick="commands.readSignalErrors({{id}})"></i>'+
+      '<i style="display: {{displayWarning}};" class="glyphicon glyphicon-warning-sign text-warning cursor-pointer" title="Show warnings." onclick="commands.readSignalWarnings({{id}})"></i>'+
+      '<i style="display: {{displayError}};" class="glyphicon glyphicon-exclamation-sign text-danger cursor-pointer" title="Show errors." onclick="commands.readSignalErrors({{id}})"></i>'+
     '</td>'+
     '<td><span class="service-name">{{service}}</span></td>'+
     '<td><span class="system-name">{{system}}</span></td>'+

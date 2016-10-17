@@ -18,8 +18,8 @@ springBoot {
     mainClass = "qla.modules.boot.QLA"
 }
 jar {
-	baseName = 'demo'
-	version = '0.0.1-SNAPSHOT'
+	baseName = 'QLA'
+	version = '0.0.2-SNAPSHOT'
 }
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
@@ -28,6 +28,31 @@ repositories {
 	mavenCentral()
 }
 
+task copyConfig(type: Copy){
+	from 'config'
+	into 'dist/config'
+	exclude 'run.bat'
+}
+
+task copyJar(type: Copy){
+	from 'build/libs'
+	into 'dist'
+	exclude '*.original'
+}
+
+task copyRunScript(type: Copy){
+	from 'config'
+	into 'dist'
+	include 'run.bat'
+}
+task dist(type: Copy) {
+	
+}
+
+copyJar.dependsOn build
+copyConfig.dependsOn copyJar
+copyRunScript.dependsOn copyConfig
+dist.dependsOn copyRunScript
 
 dependencies {
 	compile ('com.google.code.gson:gson:2.2.4')
@@ -35,6 +60,5 @@ dependencies {
 	compile('com.jcraft:jsch:0.1.54')
 	compile files("/opt/lib/rt.jar")
 	compile ('xerces:xercesImpl:2.8.0')
-	testCompile('org.springframework.boot:spring-boot-starter-test')
 	compile ('junit:junit:4.12')
 }

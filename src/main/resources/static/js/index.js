@@ -41,7 +41,18 @@ backendActions = {
 };
 
 var commands = {
-
+  
+  
+  higlightRow: function(event){
+    var row = event.target;
+    while("TR" != row.nodeName) {
+      row = row.parentElement;
+    }
+    uiElements.signalsTable
+      .find(".selected-row").removeClass("selected-row");
+    $(row).addClass("selected-row");
+  },
+  
   LoadExceptionSource: function(id){
     var target = $("#exception-" + id);
     var isCollapsed = target.hasClass("in");

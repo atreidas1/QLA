@@ -239,4 +239,9 @@ background-color: #dadada;
 
 .search-input input{
   height: 22px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+}
+.selected-row {
+  background-color: #d4d4d4;
 }
