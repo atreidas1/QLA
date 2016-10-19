@@ -245,3 +245,7 @@ background-color: #dadada;
 .selected-row {
   background-color: #d4d4d4;
 }
+
+.table-wrapper {
+  position: relative;
+}

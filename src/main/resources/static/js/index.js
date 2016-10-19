@@ -152,7 +152,7 @@ var commands = {
       infoFile = data.parsedfile;
       commands.refreshParsedLogfiles();
     } else {
-      infoFile =appData.choosedParsedLog;
+      infoFile = appData.choosedParsedLog || uiElements.signalsTable.attr("parsedfile");
     }
     if(infoFile){
       app.sendAction(backendActions.GET_LOG_INFO_ACTION,
@@ -445,7 +445,8 @@ var commands = {
   defineThreadByJSessionId: function() {
     var jsessionId = $("#JSESSIONID").val();
     app.sendAction(backendActions.DEFINE_THREAD_ACTION,
-                   {jsessionId: jsessionId, logFile: appData.choosedParsedLog});
+                   {jsessionId: jsessionId, 
+                    logFile: uiElements.signalsTable.attr("parsedfile")});
   },
 
   threadDefined: function(data){
