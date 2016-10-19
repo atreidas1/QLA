@@ -42,6 +42,30 @@ backendActions = {
 
 var commands = {
   
+  /*
+  * Select all text in container with id that given in attribute "container"
+  * of button.
+  * For example:
+  * If ve have button:
+  * <button onclick="commands.selectTextInContainer(event)" container="signal-source-code">
+  * Then on click will select all text in container with id="signal-source-code"
+  */
+  selectTextInContainer: function(event) {
+   var doc = document;
+   var element = doc
+   .getElementById(event.currentTarget.getAttribute("container"))
+   if (doc.body.createTextRange) {
+       var range = document.body.createTextRange();
+       range.moveToElementText(element);
+       range.select();
+   } else if (window.getSelection) {
+       var selection = window.getSelection();        
+       var range = document.createRange();
+       range.selectNodeContents(element);
+       selection.removeAllRanges();
+       selection.addRange(range);
+   }
+  },
   
   higlightRow: function(event){
     var row = event.target;
@@ -73,14 +97,16 @@ var commands = {
     $("#exception-" + id).collapse("show");
   },
   
+  /*
+  * Search in signals by content.
+  */
   searchInSignals: function(){
-    var searchContent = uiElements.searchContent.val();
-    if(searchContent) {
-      app.sendAction(backendActions.GET_LOG_INFO_ACTION, {successAction: "buildRqRsTable",
-                                                          searchContent: searchContent,
-                                                          infoFile: uiElements.signalsTable.attr("parsedfile")
-                                                         })
+    var rq = {
+      successAction: "buildRqRsTable",
+      searchContent: uiElements.searchContent.val(),
+      infoFile: uiElements.signalsTable.attr("parsedfile")
     }
+    app.sendAction(backendActions.GET_LOG_INFO_ACTION, rq);
   },
   
   filterRowsByClass: function(event) {

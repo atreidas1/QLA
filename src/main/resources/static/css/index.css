@@ -249,3 +249,6 @@ background-color: #dadada;
 .table-wrapper {
   position: relative;
 }
+.modal-title{
+  display: inline-block;
+}
