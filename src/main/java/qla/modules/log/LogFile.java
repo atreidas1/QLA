@@ -67,13 +67,11 @@ public class LogFile {
 						logline.addLineToMessage(nextLine());
 					}
 				}
-				if(logline.getThread().isEmpty()){
-					System.out.println(logline.getNumber());
-				}
 				return logline;
+			} else {
+				return new Logline(line, logConfiGuration);
 			}
 		}
-		
 		return null;
 	}
 	

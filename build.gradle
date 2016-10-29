@@ -60,5 +60,4 @@ dependencies {
 	compile('com.jcraft:jsch:0.1.54')
 	compile files("/opt/lib/rt.jar")
 	compile ('xerces:xercesImpl:2.8.0')
-	compile ('junit:junit:4.12')
 }

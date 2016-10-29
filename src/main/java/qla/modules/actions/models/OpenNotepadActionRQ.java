@@ -5,6 +5,7 @@ public class OpenNotepadActionRQ extends AbstractActionCommand{
 	private String logFilename;
 	private String lineNumber;
 	private String pathToFile;
+	private int signalId = -1;
 	
 	public String getParsedfileName() {
 		return parsedfileName;
@@ -30,5 +31,10 @@ public class OpenNotepadActionRQ extends AbstractActionCommand{
 	public void setPathToFile(String pathToFile) {
 		this.pathToFile = pathToFile;
 	}
-	
+	public int getSignalId() {
+		return signalId;
+	}
+	public void setSignalId(int signalId) {
+		this.signalId = signalId;
+	}
 }

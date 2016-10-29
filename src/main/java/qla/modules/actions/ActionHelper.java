@@ -9,7 +9,6 @@ import java.util.Map;
 
 import qla.modules.actions.exeption.ActionException;
 import qla.modules.confuguration.AppConfiguration;
-import qla.modules.servers.models.ServerModel;
 
 public class ActionHelper {
 	public static Map<String, Object> createErrorAction(String message) {
@@ -19,6 +18,15 @@ public class ActionHelper {
 		return resp;
 	}
 
+	public static String getPathToTempFolder() {
+		String pathToTempFolder = AppConfiguration.getProperty("logfiles.folder") + "temp";
+		File file = new File(pathToTempFolder);
+		if(!file.exists()) {
+			file.mkdir();
+		}
+		return pathToTempFolder;
+	}
+	
 	public static Map<String, Object> createSuccesfulAction(String message) {
 		Map<String, Object> resp = new HashMap<>();
 		resp.put(IAction.ACTION_PROP, UIActions.SUCCESS);

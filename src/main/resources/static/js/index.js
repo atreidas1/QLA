@@ -14,7 +14,7 @@ uiElements = {
   totalWarnings: $("#total-warnings"),
   totalErrors: $("#total-errors"),
   totalExceptions: $("#total-exceptions"),
-  signalsTable: $("#analyse-result-table tbody"),
+  signalsTable: $("#analyse-result-table table.body tbody"),
   sourceModal: $("#signal-source"),
   progressBar: $("#progress-modal"),
   exceptionsModal: $("#exception-source"),
@@ -24,6 +24,7 @@ uiElements = {
 
 backendActions = {
   SELECT_FOLDER_ACTION : "selectFolder",
+  GET_LOG_INFO_ACTION: "GET_LOG_INFO_ACTION",
   GET_CONFIG_ACTION : "getConfig",
   SAVE_PROPERTY_ACTION : "saveProperty",
   PARSE_LOG_ACTION : "parseLog",
@@ -37,10 +38,21 @@ backendActions = {
   RUN_PUTTY_ACTION: "RUN_PUTTY_ACTION",
   EXECUTE_SSH_COMMAND_ACTION: "EXECUTE_SSH_COMMAND_ACTION",
   LOAD_EXCEPTIONS_ACTION: "LOAD_EXCEPTIONS_ACTION",
-  GET_LOG_INFO_ACTION: "GET_LOG_INFO_ACTION"
 };
 
 var commands = {
+  
+  /*
+  *Function that says backend to open given signal source in notepad.
+  *@param {signalId:Integer}
+  */
+  openSignalInNotepad: function(signalId) {
+      var data = {
+        signalId: signalId,
+        parsedfileName: uiElements.signalsTable.attr("parsedfile")
+      };
+      app.sendAction(backendActions.OPEN_IN_NOTEPAD_ACTION, data);
+  },
   
   /*
   * Select all text in container with id that given in attribute "container"
@@ -133,6 +145,7 @@ var commands = {
     var input = $(event.target);
     var selector = input.attr("filter-by");
     var inpValue = input.val();
+    console.log(inpValue)
     var rows = uiElements.signalsTable.children();
     var pattern = new RegExp(inpValue, "i");
     var filterName = input.attr("filter-name");
@@ -406,7 +419,7 @@ var commands = {
   },
 
   buildRqRsTable : function(data) {
-    var table = $("#analyse-result-table tbody");
+    var table = uiElements.signalsTable;
     table.attr("parsedfile", data.infoFile);
     table.attr("logfile", data.logfile);
     table.empty();

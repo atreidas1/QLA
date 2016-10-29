@@ -33,18 +33,18 @@
         <li><a href="#servers" id="servers-tab" data-toggle="tab">Servers</a></li>
         <li><a href="#settings" id="settings-tab" data-toggle="tab">Settings</a></li>
       </ul>
-       <ul class="nav navbar-nav navbar-right">
+      <ul class="nav navbar-nav navbar-right">
         <li class="dropdown">
           <a class="dropdown-toggle bold" data-toggle="dropdown">Connection status:</a>
-        <ul class="dropdown-menu">
-          <li><a onclick="app.establishConnection()">Connect</a></li>
-          <li><a onclick="app.disconnect()">Disonnect</a></li>
-        </ul>
+          <ul class="dropdown-menu">
+            <li><a onclick="app.establishConnection()">Connect</a></li>
+            <li><a onclick="app.disconnect()">Disonnect</a></li>
+          </ul>
         </li>
         <li><a href="" id="connection-status-disconnected">.</a></li>
       </ul>
     </div>
-   
+
   </nav>
 
   <!-- Tab panes -->
@@ -77,83 +77,86 @@
       <div id="diagram">
       </div>
       <div id="requestsAndResponses">
-       <div class="results">
+        <div class="results">
 
-         <div class="info-box">
-           <span class="message bold">Results for </span>
-           <span class="message-value bold" model="log" id="logname"></span>
-         </div>
-         <div class="info-box">
-           <span class="message bold">Signals:</span>
-           <span class="message-value bold" model="numberOfSignals" id="total-signals">0</span>
-         </div>
-         <div class="info-box cursor-pointer">
-          <span class="message">
+          <div class="info-box">
+            <span class="message bold">Results for </span>
+            <span class="message-value bold" model="log" id="logname"></span>
+          </div>
+          <div class="info-box">
+            <span class="message bold">Signals:</span>
+            <span class="message-value bold" model="numberOfSignals" id="total-signals">0</span>
+          </div>
+          <div class="info-box cursor-pointer">
+            <span class="message">
            <i class="glyphicon glyphicon-warning-sign text-warning" title="Warnings" classname="warning-row" onclick="commands.filterRowsByClass(event)"></i>
           </span>
-          <span class="message-value bold" model="numberWarningSignals" id="total-warnings">0</span>
-         </div>
-         <div class="info-box cursor-pointer">
-           <span class="message">
+            <span class="message-value bold" model="numberWarningSignals" id="total-warnings">0</span>
+          </div>
+          <div class="info-box cursor-pointer">
+            <span class="message">
              <i  class="glyphicon glyphicon-exclamation-sign text-danger" title="Errors" classname="error-row" onclick="commands.filterRowsByClass(event)"></i>
            </span>
-           <span class="message-value bold" model="numberErrorSignals" id="total-errors">0</span>
-         </div>
-         <div class="info-box cursor-pointer" onclick="commands.loadExceptions()">
-           <span class="message">
+            <span class="message-value bold" model="numberErrorSignals" id="total-errors">0</span>
+          </div>
+          <div class="info-box cursor-pointer" onclick="commands.loadExceptions()">
+            <span class="message">
              <i  class="glyphicon glyphicon-fire text-danger" title="Exceptions"></i>
            </span>
-           <span class="message-value bold" id="total-exceptions">0</span>
-         </div>
-         <div class="info-box search-input">
+            <span class="message-value bold" id="total-exceptions">0</span>
+          </div>
+          <form onsubmit="commands.searchInSignals();return false;" class="info-box search-input">
             <div class="input-group">
               <input type="text" id="searchContent" class="form-control" placeholder="Search in signals.">
-                <span class="input-group-btn">
+              <span class="input-group-btn">
                   <button class="btn btn-default btn-xs" type="button" onclick="commands.searchInSignals()">
                     <span class="glyphicon glyphicon-search"></span>
-                  </button>
-                </span>
-            </div><!-- /input-group -->
-         </div>
-         <div id="exception-source" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-          <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-              <div class="modal-header">
+              </button>
+              </span>
+            </div>
+            <input class="invisible" type="submit">
+          </form>
+          <div id="exception-source" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+              <div class="modal-content">
+                <div class="modal-header">
                   <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h3 class="modal-title">Exceptions <span model="log"></span></h3>
+                  <h3 class="modal-title">Exceptions <span model="log"></span></h3>
                 </div>
                 <div class="modal-body" id="exceptions-container">
                 </div>
+              </div>
             </div>
           </div>
         </div>
+        <div class="fixed-header-table" id="analyse-result-table">
+          <table class="header">
+            <tr>
+              <td class="line-number bold">Line number</td>
+              <td class="rqrs-name bold">
+                <span>RQ/RS name</span>
+                <input type="text" class="custom-input" filter-name="rqrsFilter" filter-by=".signal-name" id="signalInp" oninput="commands.filter(event)">
+              </td>
+              <td class="service bold">
+                <span>Service</span>
+                <input type="text" class="custom-input" filter-name="serviceFilter" filter-by=".service-name" oninput="commands.filter(event)">
+              </td>
+              <td class="system bold">
+                <span>System</span>
+                <input type="text" class="custom-input" filter-name="systemFilter" filter-by=".system-name" oninput="commands.filter(event)">
+              </td>
+              <td class="actions bold">
+                <span>Thread</span>
 
-       </div>
-       
-        <table id="analyse-result-table">
-        <thead>
-           <td class="id bold">ID</td>
-           <td class="line-number bold">Line number</td>
-           <td class="rqrs-name bold">
-             <span>RQ/RS name</span>
-             <input type="text" class="custom-input" filter-name="rqrsFilter" filter-by=".signal-name" id="signalInp" oninput="commands.filter(event)">
-           </td>
-           <td class="service bold">
-             <span>Service</span>
-             <input type="text" class="custom-input" filter-name="serviceFilter" filter-by=".service-name" oninput="commands.filter(event)">
-           </td>
-           <td class="system bold">
-             <span>System</span>
-             <input type="text" class="custom-input" filter-name="systemFilter" filter-by=".system-name" oninput="commands.filter(event)">
-           </td>
-           <td class="actions bold">
-             <span>Thread</span>
-             
-           </td>
-         </thead>
-         <tbody>
-         </tbody>
-      </table>
+              </td>
+            </tr>
+          </table>
+          <div class="scrollable-area">
+            <table class="body" onclick="commands.higlightRow(event)">
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
       </div>
     </div>
     <div class="tab-pane" id="servers"></div>
@@ -163,9 +166,9 @@
 
   </div>
   <div id="signal-source" class="modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal">&times;</button>
           <h4 class="modal-title">Signal source</h4>
           <button title="Select source" class="btn btn-default btn-xs" onclick="commands.selectTextInContainer(event)" container="signal-source-code">
@@ -176,25 +179,25 @@
           <pre id="source" class="language-markup"><code class="language-markup" id="signal-source-code"></code></pre>
           <textarea id="for-copy"></textarea>
         </div>
+      </div>
     </div>
   </div>
-</div>
-<div id="progress-modal" class="modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
+  <div id="progress-modal" class="modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal">&times;</button>
           <h4 class="modal-title">Processing...</h4>
         </div>
         <div class="modal-body">
-         <div class="progress progress-striped">
+          <div class="progress progress-striped">
             <div class="progress-bar progress-bar-success" id="progress-line" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
             </div>
           </div>
         </div>
+      </div>
     </div>
   </div>
-</div>
   <script src="libs/jquery.min.js"></script>
   <script src="libs/bootstrap.min.js"></script>
   <script src="libs/diagram.js"></script>
@@ -202,14 +205,17 @@
   <script src="js/templates.js"></script>
   <script src="js/index.js"></script>
   <script>
-    $("#main-toolbar").height($(window).height()-72);
-    $("#requestsAndResponses").height($(window).height()-57);
-    $("#source").height($(window).height()-150);
-    $(window).resize(function(){
-      $("#main-toolbar").height($(window).height()-72);
-      $("#requestsAndResponses").height($(window).height()-57);
-      $("#source").height($(window).height()-150);
+    $("#main-toolbar").height($(window).height() - 72);
+    $("#requestsAndResponses").height($(window).height() - 57);
+    $("#source").height($(window).height() - 150);
+    $(".scrollable-area").height($(window).height() - 139);
+    $(window).resize(function() {
+      $("#main-toolbar").height($(window).height() - 72);
+      $("#requestsAndResponses").height($(window).height() - 57);
+      $("#source").height($(window).height() - 150);
+      $(".scrollable-area").height($(window).height() - 139);
     });
+
   </script>
 </body>
 
