@@ -9,11 +9,17 @@ import qla.modules.loganalyser.models.LogModel;
 public abstract class AbstractLoglineProcessor implements ILoglineProcessor {
 	protected Pattern conditionPattern;
 	protected Pattern extractPattern;
-	
+	protected boolean isMatch = false;
 	
 	@Override
 	public boolean isNeedProcessing(Logline logline) {
-		return conditionPattern.matcher(logline.getSource()).matches();
+		boolean isNeedProcessing = false;
+		if(isMatch) {
+			isNeedProcessing = conditionPattern.matcher(logline.getSource()).matches();
+		} else {
+			isNeedProcessing = conditionPattern.matcher(logline.getSource()).find();
+		}
+		return isNeedProcessing;
 	}
 
 	public Pattern getExtractPattern() {
@@ -30,5 +36,13 @@ public abstract class AbstractLoglineProcessor implements ILoglineProcessor {
 
 	public void setConditionPattern(String conditionPattern) {
 		this.conditionPattern = Pattern.compile(conditionPattern, Pattern.DOTALL);
+	}
+	
+	public boolean isMatch() {
+		return isMatch;
+	}
+
+	public void setMatch(boolean isMatch) {
+		this.isMatch = isMatch;
 	}
 }

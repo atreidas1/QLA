@@ -42,10 +42,9 @@ public class SignalLoglineProcessor extends AbstractLoglineProcessor {
 	
 	protected String getSignalType(Logline logline, LogFile logFile) {
 		if(requestPattern!=null && responsePattern != null) {
-			if(requestPattern.matcher(logline.getSource()).matches()){
+			if(requestPattern.matcher(logline.getSource()).find()){
 				return incomingSignalName;
-			}
-			if(responsePattern.matcher(logline.getSource()).matches()){
+			} else {
 				return outgoingSignalName;
 			}
 		}

@@ -87,79 +87,79 @@
 		<property name="jsessionIdPattern" value="\[[A-Z0-9]{32}\]"></property>
 		<property name="threadPattern" value="\[(((?![A-Z0-9]{32})[a-zA-Z_0-9-.\)\(:=\]\[,#]{6,}( CPU_HEAVY){0,1})|(default task-[0-9]{1,4}))\]"></property>
 		<property name="conversationPattern" value="\[([a-zA-Z_0-9]{1,}[.]){1,10}[a-zA-Z_0-9]{1,}\]"></property>
-		<property name="newLoglinePatern" value="^[0-9]{4}-[0-9]{2}-[0-9]{2}.*"></property>
+		<property name="newLoglinePatern" value="^[0-9]{4}-[0-9]{2}-[0-9]{2}"></property>
 	</bean>
 	
 	<bean id="tdpLoglineProcessor" class="qla.modules.log.processors.SignalLoglineProcessor">
-		<property name="conditionPattern" value=".*(XML Request|XML Response):.*"></property>
-		<property name="extractPattern" value="&lt;.*&gt;$"></property>
+		<property name="conditionPattern" value="(XML Request|XML Response):"></property>
+		<property name="extractPattern" value="&lt;.*&gt;"></property>
 		<property name="signalNamePattern" value="&lt;((ns[\d]:)?\w*?) "></property>
 		<property name="warningsPattern" value="&lt;(ns[\d]:)?Warnings.{1,}&lt;/(ns[\d]:)?Warnings&gt;"></property>
 		<property name="errorsPattern" value="(&lt;(ns[\d]:)?Errors&gt;.{1,}&lt;/(ns[\d]:)?Errors&gt;|&lt;Error .*/&gt;)"></property>
 		<property name="system" value="TDP"></property>
 		<property name="actorPattern" value=".*[.](\w*?)\]"></property>
 		<property name="contentType" value="XML"></property>
-		<property name="requestPattern" value=".*XML Request:.*"></property>
-		<property name="responsePattern" value=".*XML Response:.*"></property>
+		<property name="requestPattern" value="XML Request:"></property>
+		<property name="responsePattern" value="XML Response:"></property>
 		<property name="incomingSignalName" value="Request"></property>
 		<property name="outgoingSignalName" value="Response"></property>
 	</bean>
 	
 	<bean id="CUILoglineProcessor" class="qla.modules.log.processors.SignalLoglineProcessor">
-		<property name="conditionPattern" value=".*\[TDP_WEB_SERVICE\] (XML Request sent to servant|XML Response received from servant).*"></property>
-		<property name="extractPattern" value="&lt;.*&gt;$"></property>
+		<property name="conditionPattern" value="\[TDP_WEB_SERVICE\] (XML Request sent to servant|XML Response received from servant)"></property>
+		<property name="extractPattern" value="&lt;.*&gt;"></property>
 		<property name="signalNamePattern" value="&lt;(\w*?) "></property>
 		<property name="warningsPattern" value="&lt;(ns[\d]:)?Warnings.{1,}&lt;/(ns[\d]:)?Warnings&gt;"></property>
 		<property name="errorsPattern" value="(&lt;(ns[\d]:)?Errors&gt;.{1,}&lt;/(ns[\d]:)?Errors&gt;|&lt;Error .*/&gt;)"></property>
 		<property name="system" value="CUI"></property>
 		<property name="actorPattern" value="servant \[(\w*?)\] "></property>
 		<property name="contentType" value="XML"></property>
-		<property name="requestPattern" value=".*XML Request.*"></property>
-		<property name="responsePattern" value=".*XML Response.*"></property>
+		<property name="requestPattern" value="XML Request"></property>
+		<property name="responsePattern" value="XML Response"></property>
 		<property name="incomingSignalName" value="Request"></property>
 		<property name="outgoingSignalName" value="Response"></property>
 	</bean>
 	
 	<bean id="sabreLoglineProcessor" class="qla.modules.log.processors.SignalLoglineProcessor">
-		<property name="conditionPattern" value=".*(Sending to Sabre host|Response from Sabre host) :.*"></property>
-		<property name="extractPattern" value="&lt;.*&gt;$"></property>
+		<property name="conditionPattern" value="(Sending to Sabre host|Response from Sabre host) :"></property>
+		<property name="extractPattern" value="&lt;.*&gt;"></property>
 		<property name="signalNamePattern" value="&lt;eb:Action&gt;(\w*?)&lt;/eb:Action&gt;"></property>
 		<property name="warningsPattern" value="&lt;(ns[\d]:)?Warnings.{1,}&lt;/(ns[\d]:)?Warnings&gt;"></property>
 		<property name="errorsPattern" value="(&lt;(ns[\d]:)?Errors&gt;.{1,}&lt;/(ns[\d]:)?Errors&gt;|&lt;Error .*/&gt;)"></property>
 		<property name="system" value="SABRE"></property>
 		<property name="actorPattern" value="&lt;eb:Service.*&gt;(\w*?)&lt;/eb:Service&gt;"></property>
 		<property name="contentType" value="XML"></property>
-		<property name="requestPattern" value=".*Sending to Sabre host :.*"></property>
-		<property name="responsePattern" value=".*Response from Sabre host :.*"></property>
+		<property name="requestPattern" value="Sending to Sabre host :"></property>
+		<property name="responsePattern" value="Response from Sabre host :"></property>
 		<property name="incomingSignalName" value="Request"></property>
 		<property name="outgoingSignalName" value="Response"></property>
 	</bean>
 	
 	
 	<bean id="aceLoglineProcessor" class="qla.modules.log.processors.SignalLoglineProcessor">
-		<property name="conditionPattern" value=".*(Sending Message to ACE|Received From ACE):.*"></property>
-		<property name="extractPattern" value="&lt;.*&gt;$"></property>
+		<property name="conditionPattern" value="(Sending Message to ACE|Received From ACE):"></property>
+		<property name="extractPattern" value="&lt;.*&gt;"></property>
 		<property name="signalNamePattern" value=".*&lt;/(\w*?)&gt;.{1,10}&lt;/ACORD&gt;"></property>
 		<property name="system" value="ACE"></property>
 		<property name="contentType" value="XML"></property>
-		<property name="requestPattern" value=".*Sending Message to ACE:.*"></property>
-		<property name="responsePattern" value=".*Received From ACE:.*"></property>
+		<property name="requestPattern" value="Sending Message to ACE:"></property>
+		<property name="responsePattern" value="Received From ACE:"></property>
 		<property name="incomingSignalName" value="Request"></property>
 		<property name="outgoingSignalName" value="Response"></property>
 	</bean>
 	
 	<bean id="exceptionLoglineProcessor" class="qla.modules.log.processors.ExceptionLoglineProcessor">
-		<property name="conditionPattern" value=".*(\n| )(([a-zA-Z0-9]*?)[.]){2,20}[a-zA-Z0-9]{1,200}(Exception|Error)[\n|\r|:].*"></property>
+		<property name="conditionPattern" value="(\n| )(([a-zA-Z0-9]*?)[.]){2,20}[a-zA-Z0-9]{1,200}(Exception|Error)[\n|\r|:]"></property>
 		<property name="exceptionNamePattern" value="[\n ]{1,2}(((\w*?)[.]){1,20}(\w*?)(Exception|Error))(\n|:)"></property>
 	</bean>
 	
 	<bean id="astralProcessor" class="qla.modules.log.processors.MultiLoglineProcessor">
-		<property name="conditionPattern" value=".*(DATA REQUEST START|RECEIVED MESSAGE START).*"></property>
+		<property name="conditionPattern" value="(DATA REQUEST START|RECEIVED MESSAGE START)"></property>
 		<property name="extractPattern" value="MatipHandlerTypeAConv] (.*?)$"></property>
 		<property name="system" value="ASTRAL"></property>
 		<property name="contentType" value="TEXT"></property>
-		<property name="requestPattern" value=".*DATA REQUEST START.*"></property>
-		<property name="responsePattern" value=".*RECEIVED MESSAGE START.*"></property>
+		<property name="requestPattern" value="DATA REQUEST START"></property>
+		<property name="responsePattern" value="RECEIVED MESSAGE START"></property>
 		<property name="incomingSignalName" value="Request"></property>
 		<property name="outgoingSignalName" value="Response"></property>
 		<property name="endPattern" value=".*(DATA REQUEST END|RECEIVED MESSAGE END).*"></property>
@@ -167,13 +167,13 @@
 	</bean>
 	
 	<bean id="viatorProcessor" class="qla.modules.log.processors.MultiLoglineProcessor">
-		<property name="conditionPattern" value=".*ViatorHttpConnection\] (Viator path|Raw response from Host).*"></property>
+		<property name="conditionPattern" value="ViatorHttpConnection\] (Viator path|Raw response from Host)"></property>
 		<property name="extractPattern" value=" (\{.*\})$"></property>
 		<property name="signalNamePattern" value="Viator path: (.*)$"></property>
 		<property name="system" value="VIATOR"></property>
 		<property name="contentType" value="JSON"></property>
-		<property name="requestPattern" value=".*Viator path:.*"></property>
-		<property name="responsePattern" value=".*Raw response from Host:.*"></property>
+		<property name="requestPattern" value="Viator path:"></property>
+		<property name="responsePattern" value="Raw response from Host:"></property>
 		<property name="incomingSignalName" value="Request"></property>
 		<property name="outgoingSignalName" value="Response"></property>
 		<property name="endPattern" value=".*(Post-request for Viator|Raw response from Host).*"></property>

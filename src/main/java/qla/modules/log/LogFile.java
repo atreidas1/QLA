@@ -59,9 +59,6 @@ public class LogFile {
 				Logline logline = buildLoglineObject(line);
 				while(hasNextLine()){
 					if(isNewLogline(nextLine)) {
-						if(logline.getThread().isEmpty()){
-							System.out.println(logline.getNumber());
-						}
 						return logline;
 					} else {
 						logline.addLineToMessage(nextLine());
@@ -79,7 +76,7 @@ public class LogFile {
 		if(logConfiGuration.getNewLoglinePatern() == null) {
 			throw new IllegalStateException("Pattern for matching new logline is null!");
 		}
-		return logConfiGuration.getNewLoglinePatern().matcher(line).matches();
+		return logConfiGuration.getNewLoglinePatern().matcher(line).find();
 	}
 
 	private Logline buildLoglineObject(String line) {
