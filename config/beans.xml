@@ -95,7 +95,7 @@
 		<property name="extractPattern" value="&lt;.*&gt;"></property>
 		<property name="signalNamePattern" value="&lt;((ns[\d]:)?\w*?) "></property>
 		<property name="warningsPattern" value="&lt;(ns[\d]:)?Warnings.{1,}&lt;/(ns[\d]:)?Warnings&gt;"></property>
-		<property name="errorsPattern" value="(&lt;(ns[\d]:)?Errors&gt;.{1,}&lt;/(ns[\d]:)?Errors&gt;|&lt;Error .*/&gt;)"></property>
+		<property name="errorsPattern" value="(&lt;(ns[\d]:)?Errors.*Errors&gt;|&lt;Error .*/&gt;)"></property>
 		<property name="system" value="TDP"></property>
 		<property name="actorPattern" value=".*[.](\w*?)\]"></property>
 		<property name="contentType" value="XML"></property>
@@ -110,7 +110,7 @@
 		<property name="extractPattern" value="&lt;.*&gt;"></property>
 		<property name="signalNamePattern" value="&lt;(\w*?) "></property>
 		<property name="warningsPattern" value="&lt;(ns[\d]:)?Warnings.{1,}&lt;/(ns[\d]:)?Warnings&gt;"></property>
-		<property name="errorsPattern" value="(&lt;(ns[\d]:)?Errors&gt;.{1,}&lt;/(ns[\d]:)?Errors&gt;|&lt;Error .*/&gt;)"></property>
+		<property name="errorsPattern" value="(&lt;(ns[\d]:)?Errors.*Errors&gt;|&lt;Error .*/&gt;)"></property>
 		<property name="system" value="CUI"></property>
 		<property name="actorPattern" value="servant \[(\w*?)\] "></property>
 		<property name="contentType" value="XML"></property>
@@ -124,8 +124,8 @@
 		<property name="conditionPattern" value="(Sending to Sabre host|Response from Sabre host) :"></property>
 		<property name="extractPattern" value="&lt;.*&gt;"></property>
 		<property name="signalNamePattern" value="&lt;eb:Action&gt;(\w*?)&lt;/eb:Action&gt;"></property>
-		<property name="warningsPattern" value="&lt;(ns[\d]:)?Warnings.{1,}&lt;/(ns[\d]:)?Warnings&gt;"></property>
-		<property name="errorsPattern" value="(&lt;(ns[\d]:)?Errors&gt;.{1,}&lt;/(ns[\d]:)?Errors&gt;|&lt;Error .*/&gt;)"></property>
+		<property name="warningsPattern" value="&lt;(ns[\d]:)?Warnings.*&lt;/(ns[\d]:)?Warnings&gt;"></property>
+		<property name="errorsPattern" value="(&lt;(ns[\d]:)?Errors.*&lt;/(ns[\d]:)?Errors&gt;|&lt;Error .*/&gt;)"></property>
 		<property name="system" value="SABRE"></property>
 		<property name="actorPattern" value="&lt;eb:Service.*&gt;(\w*?)&lt;/eb:Service&gt;"></property>
 		<property name="contentType" value="XML"></property>

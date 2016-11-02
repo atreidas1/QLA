@@ -42,6 +42,37 @@ backendActions = {
 
 var commands = {
   
+  showExceptionsInSignalTable: function(data) {
+    var exceptions = data.exceptions;
+    var signals = uiElements.signalsTable.children();
+    var signalIndex = 0;
+    var sinalLineNumber = function(signalContainer){
+      return parseInt($(signalContainer).find(".line-number").text());
+    }
+    var insertExceptionRow = function(exceptionObj){
+      exceptionLn = exceptionObj.lineNumber;
+      var src = commands.bindToTemplate(templates.EXCEPTION_IN_SIGNAL_TABLE_TEMPLATE, exceptionObj);
+      if(exceptionLn > sinalLineNumber(signals[signalIndex]) && signalIndex < signals.length){
+        while (signalIndex < signals.length
+             && !(exceptionLn > sinalLineNumber(signals[signalIndex])
+             && exceptionLn < sinalLineNumber(signals[signalIndex + 1]))) {
+          signalIndex ++;
+        }
+      } 
+      if(signalIndex < signals.length) {
+        var indexToInsertBefore = signalIndex == 0 &&
+                                  exceptionLn < sinalLineNumber(signals[signalIndex]) ? 
+                                  signalIndex :
+                                  (signalIndex + 1)
+        $(src).insertBefore($(signals[indexToInsertBefore]));
+      } else {
+        uiElements.signalsTable.append($(src));
+      }
+    }
+    exceptions.forEach(function(e, index) {insertExceptionRow(e);})
+    uiElements.signalsTable.attr("hasexceptions", true);
+  },
+  
   /*
   *Function that says backend to open given signal source in notepad.
   *@param {signalId:Integer}
@@ -227,7 +258,7 @@ var commands = {
     commands.showLineInLog(lineNumber);
   },
 
-  showExceptions: function(data){
+  showExceptionsInModal: function(data){
     var exceptionsContainer = $("#exceptions-container");
     exceptionsContainer.empty();
     var exceptions = data.exceptions;
@@ -240,13 +271,19 @@ var commands = {
     uiElements.exceptionsModal.modal();
   },
 
-  loadExceptions: function(){
+  loadExceptions: function(succesAction){
     var parsedFile = uiElements.signalsTable.attr("parsedfile");
     var thread = uiElements.threadInp.val();
     var numberOfExceptions = parseInt(uiElements.totalExceptions.html());
+    if("showExceptionsInSignalTable" == succesAction &&
+        uiElements.signalsTable.attr("hasexceptions") == "true") {
+      uiElements.signalsTable.find(".exception-in-signal-table").remove()
+      uiElements.signalsTable.attr("hasExceptions", false)
+      return;
+    }
     if(parsedFile && numberOfExceptions){
       app.sendAction(backendActions.LOAD_EXCEPTIONS_ACTION,
-                    {successAction: "showExceptions",
+                    {successAction: succesAction,
                      parsedfile: parsedFile,
                      thread: thread
                     })
@@ -451,6 +488,7 @@ var commands = {
     $("#total-errors").html(signalsWitherrors);
     $("#total-exceptions").html(data.numberOfExceptions);
     $("#logname").html(data.logfile);
+    uiElements.signalsTable.attr("hasExceptions", false);
   },
 
   refreshParsedLogfiles : function() {
