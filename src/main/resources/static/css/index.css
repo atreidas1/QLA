@@ -255,3 +255,13 @@ table.body {
         width: 350px;
     }
 }
+
+@media only screen and (max-width: 1910px) {
+    .rqrs-name,.service {
+        width: 550px;
+    }
+}
+
+.exception-in-signal-table{
+  background-color: #ffbcff;
+}

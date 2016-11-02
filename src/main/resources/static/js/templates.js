@@ -84,4 +84,14 @@ var templates = {
   '<div class="collapse" id="exception-{{id}}">'+
     '<pre>{{source}}</pre>'+
   '</div>',
+  
+  EXCEPTION_IN_SIGNAL_TABLE_TEMPLATE:
+  '<tr class="exception-in-signal-table">'+
+    '<td class="line-number"><span class="hover-underline" onclick="commands.showLineInLog({{lineNumber}})">{{lineNumber}}</span></td>'+
+    '<td class="rqrs-name"><span class="bold signal-name hover-underline" >{{name}}</span>'+
+    '</td>'+
+    '<td class="service"><span class="service-name"></span></td>'+
+    '<td class="system"><span class="system-name"></span></td>'+
+    '<td class="action-cell">{{thread}}</td>'+
+  '</tr>',
 }

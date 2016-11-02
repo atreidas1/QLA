@@ -99,11 +99,14 @@
            </span>
             <span class="message-value bold" model="numberErrorSignals" id="total-errors">0</span>
           </div>
-          <div class="info-box cursor-pointer" onclick="commands.loadExceptions()">
+          <div class="info-box cursor-pointer">
             <span class="message">
-             <i  class="glyphicon glyphicon-fire text-danger" title="Exceptions"></i>
+            <i  class="glyphicon glyphicon-fire text-danger" onclick="commands.loadExceptions('showExceptionsInModal')" title="Exceptions"></i>
            </span>
             <span class="message-value bold" id="total-exceptions">0</span>
+            <button type="button" class="btn btn-default btn-xs" onclick="commands.loadExceptions('showExceptionsInSignalTable')" title="Show exceptions in signal table.">
+              <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
+            </button>
           </div>
           <form onsubmit="commands.searchInSignals();return false;" class="info-box search-input">
             <div class="input-group">
@@ -208,12 +211,12 @@
     $("#main-toolbar").height($(window).height() - 72);
     $("#requestsAndResponses").height($(window).height() - 57);
     $("#source").height($(window).height() - 150);
-    $(".scrollable-area").height($(window).height() - 139);
+    $(".scrollable-area").height($(window).height() - 140);
     $(window).resize(function() {
       $("#main-toolbar").height($(window).height() - 72);
       $("#requestsAndResponses").height($(window).height() - 57);
       $("#source").height($(window).height() - 150);
-      $(".scrollable-area").height($(window).height() - 139);
+      $(".scrollable-area").height($(window).height() - 140);
     });
 
   </script>
