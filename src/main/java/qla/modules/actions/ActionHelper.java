@@ -7,10 +7,15 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.util.StringUtils;
+
 import qla.modules.actions.exeption.ActionException;
 import qla.modules.confuguration.AppConfiguration;
 
 public class ActionHelper {
+	public static final String PARSED_LOGS_FOLDER = "parsed";
+	public static final String PARSED_LOGS_EXT  = ".bin";
+	
 	public static Map<String, Object> createErrorAction(String message) {
 		Map<String, Object> resp = new HashMap<>();
 		resp.put(IAction.ACTION_PROP, UIActions.ERROR);
@@ -18,8 +23,8 @@ public class ActionHelper {
 		return resp;
 	}
 
-	public static String getPathToTempFolder() {
-		String pathToTempFolder = AppConfiguration.getProperty("logfiles.folder") + "temp";
+	public static String getPathToTempFolder() throws ActionException {
+		String pathToTempFolder = getLogFilesFolder() + "temp";
 		File file = new File(pathToTempFolder);
 		if(!file.exists()) {
 			file.mkdir();
@@ -42,27 +47,26 @@ public class ActionHelper {
 
 	public static String getPathToLogFile(String fileName) throws ActionException {
 		checkStringForNullOrEmpty(fileName, "Choose any logfile!");
-		return AppConfiguration.getProperty("logfiles.folder") + fileName;
+		return getLogFilesFolder() + fileName;
 	}
 
 	public static String getPathToParsedLogFile(String fileName) throws ActionException {
 		checkStringForNullOrEmpty(fileName, "Choose any logfile!");
-		return AppConfiguration.getProperty("parsed.logs.folder") + fileName;
+		return getParsedLogFilesFolder() + fileName;
 	}
 
-	public static String generatePathToParsedLog(String choosedLog) {
+	public static String generatePathToParsedLog(String choosedLog) throws ActionException {
 		String filename = generateOutFilename(choosedLog);
-		return AppConfiguration.getProperty("parsed.logs.folder") + filename;
+		return getParsedLogFilesFolder() + filename;
 	}
 
 	public static String generateOutFilename(String filename) {
 		String out;
-		out = filename +  AppConfiguration.getProperty("parsed.logs.suffix") 
-		+ AppConfiguration.getProperty("parsed.logs.ext");
+		out = filename + PARSED_LOGS_EXT;
 		return out;
 	}
 
-	public static String defineLogFilenameByParsed(String parsedfileName) {
+	public static String defineLogFilenameByParsed(String parsedfileName) throws ActionException {
 		int lustUnderscoreIndex = parsedfileName.lastIndexOf('_');
 		String logFilename = parsedfileName.substring(0, lustUnderscoreIndex);
 		List<File> files = getFilesInLogsFolder();
@@ -77,12 +81,30 @@ public class ActionHelper {
 		return null;
 	}
 
-	private static List<File> getFilesInLogsFolder() {
-		String pathTofolder = AppConfiguration.getProperty("logfiles.folder");
+	public static List<File> getFilesInLogsFolder() throws ActionException {
+		String pathTofolder = getLogFilesFolder();
 		return getFilesInFolder(pathTofolder);
 	}
 
-	private static List<File> getFilesInFolder(String pathToFolder) {
+	public static String getLogFilesFolder() throws ActionException {
+		String pathToFolder = AppConfiguration.getProperty("logfiles.folder");
+		if(StringUtils.isEmpty(pathToFolder)){
+			throw new ActionException("Path to logfiles folder did not configured!");
+		}
+		pathToFolder = pathToFolder.endsWith(File.separator) ? pathToFolder : pathToFolder + File.pathSeparator;
+		return pathToFolder;
+	}
+
+	public static String getParsedLogFilesFolder() throws ActionException {
+		String pathToFolder = getLogFilesFolder() + PARSED_LOGS_FOLDER + File.separator;
+		File file = new File(pathToFolder);
+		if(!file.exists()) {
+			file.mkdir();
+		}
+		return pathToFolder;
+	}
+	
+	public static List<File> getFilesInFolder(String pathToFolder) {
 		File folder = new File(pathToFolder);
 		File[] files = folder.listFiles();
 		List<File> files2 = new ArrayList<>();
@@ -98,7 +120,5 @@ public class ActionHelper {
 		if(object == null) {
 			throw new ActionException(message);
 		}
-		
 	}
-
 }

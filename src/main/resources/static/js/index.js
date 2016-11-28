@@ -492,10 +492,9 @@ var commands = {
   },
 
   refreshParsedLogfiles : function() {
-    var parsedLogfilesFolderKey = "parsed.logs.folder";
     var succesAction = "refreshPasedFilesList";
     app.sendAction(backendActions.SELECT_FOLDER_ACTION,
-                  {propKey: parsedLogfilesFolderKey, successAction: "refreshPasedFilesList"});
+                  {subAction: "GET_PARSED_LOG_FILES", successAction: "refreshPasedFilesList"});
   },
 
   refreshPasedFilesList: function(data) {
@@ -621,12 +620,10 @@ var commands = {
   },
 
   refreshLogFiles: function() {
-    var parsedLogfilesFolderKey = "logfiles.folder";
-    var succesAction = "updateLogfilesList";
     appData.chosedLog = null;
     appData.selectedFileContainer = null;
         app.sendAction(backendActions.SELECT_FOLDER_ACTION,
-                  {propKey: parsedLogfilesFolderKey, successAction: "updateLogFiles"});
+                  {subAction: "GET_LOG_FILES", successAction: "updateLogFiles"});
   },
 
   /**
