@@ -3,49 +3,51 @@ package qla.modules.actions;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-
+import org.springframework.util.StringUtils;
 import qla.modules.actions.exeption.ActionException;
 import qla.modules.actions.models.AbstractActionCommand;
 import qla.modules.actions.models.FolderChooserActionRQ;
 import qla.modules.actions.models.FolderChooserActionRS;
-import qla.modules.confuguration.AppConfiguration;
-import qla.modules.stringutils.StringUtils;
 
 public class FolderChooserAction extends AbstractAction<FolderChooserActionRQ>  {
-	public FolderChooserAction(Class rqClass) {
+	public static final String GET_LOGFILES_SUBACTION = "GET_LOG_FILES";
+	public static final String GET_PARSED_LOGFILES_SUBACTION = "GET_PARSED_LOG_FILES";
+	
+	public FolderChooserAction(@SuppressWarnings("rawtypes") Class rqClass) {
 		super(rqClass);
 	}
 	
 	@Override
 	public AbstractActionCommand proccess(FolderChooserActionRQ rq) throws ActionException {
 		FolderChooserActionRS rs = new FolderChooserActionRS();
-		String pathToFolder = rq.getFolder();
-		if(StringUtils.isEmpty(pathToFolder)) {
-			String propkey = rq.getPropKey();
-			if(!StringUtils.isEmpty(propkey)) {
-				pathToFolder = AppConfiguration.getProperty(propkey);
-				if(pathToFolder == null) {
-					throw new ActionException("Didn't find property value by key:" + propkey);
-				}
-			}
-		}
-		File folder = new File(pathToFolder);
-		if(folder.exists()){
-			if(folder.isDirectory()) {
-				File [] files = folder.listFiles();
-				List<String> filenames = new ArrayList<>();
-				for (int i = 0; i < files.length; i++) {
-					if(!files[i].isDirectory()) {
-						filenames.add(files[i].getName());
-					}
-				}
-				rs.setListOflogfiles(filenames);
+		String subAction = rq.getSubAction();
+		String pathToFolder = "";
+		if(!StringUtils.isEmpty(subAction)){
+			switch (subAction) {
+			case GET_LOGFILES_SUBACTION:
+				pathToFolder = ActionHelper.getLogFilesFolder();
+				break;
+			case GET_PARSED_LOGFILES_SUBACTION:
+				pathToFolder = ActionHelper.getParsedLogFilesFolder();
+				break;
+			default:
+				throw new ActionException("Invalid subaction:" + subAction);
 			}
 		} else {
-			throw new ActionException("Folder by given path does not exist.");
+			pathToFolder = rq.getFolder();
+		}
+		File folder = new File(pathToFolder);
+		if(folder.exists() && folder.isDirectory()){
+				List<File> files = ActionHelper.getFilesInFolder(pathToFolder);
+				List<String> fileNames = new ArrayList<>();
+				for (File file : files) {
+					fileNames.add(file.getName());
+				}
+				rs.setListOflogfiles(fileNames);
+		} else {
+			throw new ActionException("Folder by given path does not exist:" + pathToFolder);
 		}
 		rs.setSuccess("");
 		return rs;
 	}
-
 }
