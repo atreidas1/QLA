@@ -91,7 +91,7 @@ public class ActionHelper {
 		if(StringUtils.isEmpty(pathToFolder)){
 			throw new ActionException("Path to logfiles folder did not configured!");
 		}
-		pathToFolder = pathToFolder.endsWith(File.separator) ? pathToFolder : pathToFolder + File.pathSeparator;
+		pathToFolder = pathToFolder.endsWith(File.separator) ? pathToFolder : pathToFolder + File.separator;
 		return pathToFolder;
 	}
 
