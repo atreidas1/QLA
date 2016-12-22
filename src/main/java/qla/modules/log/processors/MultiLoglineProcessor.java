@@ -31,6 +31,7 @@ public class MultiLoglineProcessor extends SignalLoglineProcessor{
 	}
 	
 	private String getPartOfSignal(Logline logline) {
+		if (logline == null) return null;
 		return StringUtils.getStringBetveenChars(extractPattern, logline.getSource());
 	}
 
