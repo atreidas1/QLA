@@ -10,6 +10,7 @@ import java.io.ObjectOutputStream;
 public class LogAnalyseInfoSaver {
 	private static LogAnalisationInfo logAnalisationInfo;
 	private static long logAnalisationInfoId;
+	
 	public static File save(LogAnalisationInfo info, File file) throws IOException {
 		FileOutputStream fileOut = new FileOutputStream(file);
 		ObjectOutputStream out = new ObjectOutputStream(fileOut);

@@ -34,7 +34,7 @@ body,
   border: 1px solid darkgray;
 }
 .files-box {
-  height: 250px;
+  height: 600px;
   border: 1px solid darkgray;
   overflow-y: auto;
   margin-bottom: 10px;
@@ -250,18 +250,18 @@ table.body {
   height: 400px;
   overflow-y: scroll;
 }
-@media only screen and (max-width: 1400px) {
+
+@media only screen and (min-width: 1400px) {
     .rqrs-name,.service {
         width: 350px;
     }
 }
 
-@media only screen and (max-width: 1910px) {
+@media only screen and (min-width: 1910px) {
     .rqrs-name,.service {
         width: 550px;
     }
 }
-
 .exception-in-signal-table{
   background-color: #ffbcff;
 }

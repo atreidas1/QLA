@@ -1,5 +1,6 @@
 package qla.modules.actions;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -39,19 +40,38 @@ public class AnalyseLogAction extends AbstractAction<AnalyseLogActionRQ> {
 		ActionHelper.checkStringForNullOrEmpty(choosedLog, "Choose any logfile!");
 		String pathToChoosedLog = ActionHelper.getPathToLogFile(choosedLog);
 		String pathToParsedLog = ActionHelper.generatePathToParsedLog(choosedLog);
+		boolean isNeedProccess = isNeedProcess(pathToChoosedLog, pathToParsedLog);
 		AnalyseLogActionRS resp = new AnalyseLogActionRS();
-		try {
-			logProcessor.setCallback(createProgressCalback(rq));
-			LogAnalisationInfo logAnalisationInfo = logProcessor.process(pathToChoosedLog);
-			logAnalisationInfo.setLogFile(choosedLog);
-			LogAnalyseInfoSaver.save(logAnalisationInfo, pathToParsedLog);
-			resp.setSuccess("Log analyse completed sucessfully!");
+		if(isNeedProccess){
+			try {
+				logProcessor.setCallback(createProgressCalback(rq));
+				LogAnalisationInfo logAnalisationInfo = logProcessor.process(pathToChoosedLog);
+				logAnalisationInfo.setLogFile(choosedLog);
+				File infoFile = LogAnalyseInfoSaver.save(logAnalisationInfo, pathToParsedLog);
+				File logFile = new File(pathToChoosedLog);
+				infoFile.setLastModified(logFile.lastModified());
+				resp.setSuccess("Log analyse completed sucessfully!");
+				resp.setLogfile(choosedLog);
+				resp.setParsedfile(ActionHelper.generateOutFilename(choosedLog));
+			} catch (IOException exception) {
+				throw new ActionException(exception.getMessage());
+			}
+		} else {
+			resp.setSuccess("");
 			resp.setLogfile(choosedLog);
 			resp.setParsedfile(ActionHelper.generateOutFilename(choosedLog));
-		} catch (IOException exception) {
-			throw new ActionException(exception.getMessage());
 		}
 		return resp;
+	}
+
+	private boolean isNeedProcess(String pathToChoosedLog, String pathToParsedLog) {
+		File logFile = new File(pathToChoosedLog);
+		File parsedFile = new File(pathToParsedLog);
+		if(!parsedFile.exists() ||
+			parsedFile.lastModified() != logFile.lastModified()){
+			return true;
+		} 
+		return false;
 	}
 
 	public ILogProcessor getLogProcessor() {

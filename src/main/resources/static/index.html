@@ -51,22 +51,15 @@
   <div class="tab-content" id="main-tab-pane">
     <div class="tab-pane active" id="home">
       <div class="left-panel" id="main-toolbar">
-        <span class="bold">Parsed log files:</span>
-        <button type="button" class="btn btn-success btn-xs" onclick="commands.refreshParsedLogfiles()"><span class="glyphicon glyphicon-refresh"></span></button>
-        <button type="button" class="btn btn-danger btn-xs" onclick="commands.deletePaesedFile()"><span class="glyphicon glyphicon-remove-sign"></span></button>
-        <div class="list-group files-box" id="parsed-logs"></div>
-        <button class="btn btn-default btn-xs" onclick="commands.getLogInfo()">Show Info</button>
-        <button class="btn btn-default btn-xs" onclick="commands.defineThreadByJSessionId()">Define thread</button>
-        <div class="divider"></div>
-        <input type="text" class="form-control custom-input" id="JSESSIONID" placeholder="JSESSIONID:">
-        <div class="divider"></div>
-        <input type="text" class="form-control custom-input" id="thread" placeholder="Thread name:">
-        <div class="divider"></div>
         <span class="bold">Log files:</span>
         <button type="button" class="btn btn-success btn-xs" onclick="commands.refreshLogFiles()"><span class="glyphicon glyphicon-refresh"></span></button>
         <button type="button" class="btn btn-danger btn-xs" onclick="commands.deleteLogFile()"><span class="glyphicon glyphicon-remove-sign"></span></button>
         <div class="list-group files-box" id="logfiles"></div>
-        <button class="btn btn-default btn-xs" ondblclick="commands.analyseLogFile(event)" onclick="commands.analyseLogFile(event)">Analyse log</button>
+        <input type="text" class="form-control custom-input" id="JSESSIONID" placeholder="JSESSIONID:">
+        <div class="divider"></div>
+        <input type="text" class="form-control custom-input" id="thread" placeholder="Thread name:">
+        <div class="divider"></div>
+        <button class="btn btn-default btn-xs" onclick="commands.defineThreadByJSessionId()">Define thread</button>
         <!--<div class="divider"></div>
         <label for="flow-initiator">Initiator of flow.</label>
         <input type="text" class="form-control" id="flow-initiator" placeholder="Initiator of flow.">
@@ -212,11 +205,13 @@
     $("#requestsAndResponses").height($(window).height() - 57);
     $("#source").height($(window).height() - 150);
     $(".scrollable-area").height($(window).height() - 140);
+    $("#logfiles").height($(window).height() - 200);
     $(window).resize(function() {
       $("#main-toolbar").height($(window).height() - 72);
       $("#requestsAndResponses").height($(window).height() - 57);
       $("#source").height($(window).height() - 150);
       $(".scrollable-area").height($(window).height() - 140);
+      $("#logfiles").height($(window).height() - 200);
     });
 
   </script>

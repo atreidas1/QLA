@@ -1,5 +1,6 @@
 package qla.modules.confuguration;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -14,7 +15,7 @@ import org.springframework.context.support.FileSystemXmlApplicationContext;
 public class AppConfiguration {
 	private static Properties properties;
 	private static String CONFIG_FOLDER = System.getProperty("config.folder");
-	private static String SETTINGS_FILE = CONFIG_FOLDER + "\\config.properties";
+	private static String SETTINGS_FILE = CONFIG_FOLDER + File.separator+"config.properties";
 	
 	public static void init(){
 		try {
@@ -22,7 +23,7 @@ public class AppConfiguration {
 			System.out.println("Loading settings file:"+SETTINGS_FILE);
 			properties.load(new FileReader(SETTINGS_FILE));
 			System.out.println("Loading settings beans from file:" + "beans.xml");
-			ApplicationContext context = new FileSystemXmlApplicationContext(CONFIG_FOLDER + "\\beans.xml");
+			ApplicationContext context = new FileSystemXmlApplicationContext(CONFIG_FOLDER + File.separator+"beans.xml");
 		} catch (Exception e) {
 			throw new RuntimeException(e.getMessage(), e);
 		}

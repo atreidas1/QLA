@@ -24,22 +24,13 @@ public class DeleteFilesAction extends AbstractAction<DeleteFilesActionRQ>{
 			for (Iterator<String> logfile = logfiles.iterator(); logfile.hasNext();) {
 				String logfilename = logfile.next();
 				if(!logfilename.isEmpty()) {
-					File file = new File(ActionHelper.getPathToLogFile(logfilename));
-					file.delete();
+					File logFile = new File(ActionHelper.getPathToLogFile(logfilename));
+					File parsedFile = new File(ActionHelper.generatePathToParsedLog(logfilename));
+					parsedFile.delete();
+					logFile.delete();
 				}
 			}
 			rs.setLogfilesDeleted(true);
-		}
-		
-		if(parsedFiles != null) {
-			for (Iterator<String> paesedfile = parsedFiles.iterator(); paesedfile.hasNext();) {
-				String parsedfilename = paesedfile.next();
-				if(!parsedfilename.isEmpty()) {
-					File file = new File(ActionHelper.getPathToParsedLogFile(parsedfilename));
-					file.delete();
-				}
-			}
-			rs.setParsedfilesDeleted(true);
 		}
 		rs.setSuccess("");
 		return rs;

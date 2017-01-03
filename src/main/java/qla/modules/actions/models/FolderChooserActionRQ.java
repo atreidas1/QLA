@@ -3,7 +3,7 @@ package qla.modules.actions.models;
 public class FolderChooserActionRQ extends AbstractActionCommand{
 	private String propKey;
 	private String folder;
-
+	private String subAction;
 	public String getPropKey() {
 		return propKey;
 	}
@@ -18,6 +18,14 @@ public class FolderChooserActionRQ extends AbstractActionCommand{
 
 	public void setFolder(String folder) {
 		this.folder = folder;
+	}
+
+	public String getSubAction() {
+		return subAction;
+	}
+
+	public void setSubAction(String subAction) {
+		this.subAction = subAction;
 	}
 	
 }

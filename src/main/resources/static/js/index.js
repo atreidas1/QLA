@@ -220,7 +220,6 @@ var commands = {
     var threadName =  uiElements.threadInp.val();
     if(data) {
       infoFile = data.parsedfile;
-      commands.refreshParsedLogfiles();
     } else {
       infoFile = appData.choosedParsedLog || uiElements.signalsTable.attr("parsedfile");
     }
@@ -358,9 +357,6 @@ var commands = {
     if(data.logfilesDeleted) {
       commands.refreshLogFiles();
     }
-    if(data.parsedfilesDeleted){
-      commands.refreshParsedLogfiles();
-    }
   },
 
   openInNotepad: function(button){
@@ -491,34 +487,6 @@ var commands = {
     uiElements.signalsTable.attr("hasExceptions", false);
   },
 
-  refreshParsedLogfiles : function() {
-    var parsedLogfilesFolderKey = "parsed.logs.folder";
-    var succesAction = "refreshPasedFilesList";
-    app.sendAction(backendActions.SELECT_FOLDER_ACTION,
-                  {propKey: parsedLogfilesFolderKey, successAction: "refreshPasedFilesList"});
-  },
-
-  refreshPasedFilesList: function(data) {
-    var parsedFilesList = $("#parsed-logs");
-    parsedFilesList.empty();
-    for(var i = 0; i < data.listOflogfiles.length; i++) {
-      commands.renderTemplate(templates.PARSED_LOGFILE_TEMPLATE,
-                             {fileName: data.listOflogfiles[i]},
-                             parsedFilesList);
-    }
-  },
-
-  chooseParsedLog : function(parsedLogContainer) {
-    var container = $(parsedLogContainer);
-    var filename = container.attr("filename");
-    appData.choosedParsedLog = filename;
-    if(appData.parsedLogContainer){
-      appData.parsedLogContainer.toggleClass("selected-file");
-    }
-    appData.parsedLogContainer = container;
-    container.toggleClass("selected-file");
-  },
-
   defineThreadByJSessionId: function() {
     var jsessionId = $("#JSESSIONID").val();
     app.sendAction(backendActions.DEFINE_THREAD_ACTION,
@@ -533,7 +501,6 @@ var commands = {
   start: function(data) {
     this.config();
     this.refreshLogFiles();
-    this.refreshParsedLogfiles();
   },
 
   config: function(data) {
@@ -621,12 +588,10 @@ var commands = {
   },
 
   refreshLogFiles: function() {
-    var parsedLogfilesFolderKey = "logfiles.folder";
-    var succesAction = "updateLogfilesList";
     appData.chosedLog = null;
     appData.selectedFileContainer = null;
         app.sendAction(backendActions.SELECT_FOLDER_ACTION,
-                  {propKey: parsedLogfilesFolderKey, successAction: "updateLogFiles"});
+                  {subAction: "GET_LOG_FILES", successAction: "updateLogFiles"});
   },
 
   /**
