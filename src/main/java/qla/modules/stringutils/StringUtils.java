@@ -46,6 +46,30 @@ public class StringUtils {
 		}
 		return partOfString;
 	}
+
+	/**
+	 * Return the first part of string that matches given pattern, if no
+	 * matchers found - return empty string.
+	 * 
+	 * @param searchPattern
+	 * @param string
+	 * @return
+	 */
+	public static String getPartOfStringByPattern(Pattern searchPattern, String string, Integer occurrence) {
+		String partOfString = "";
+		Matcher matcher = searchPattern.matcher(string);
+		List<String> occurrences = new ArrayList<>();
+		String tmp;
+		while (matcher.find()) {
+			tmp = matcher.group();
+			occurrences.add(tmp);
+		}
+		if (occurrences.size() >= occurrence){
+			partOfString = occurrences.get(occurrence);
+		}
+		return partOfString;
+	}
+	
 	
 	/**
 	 * Return the first part of string that matches given pattern, if no

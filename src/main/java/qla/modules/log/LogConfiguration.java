@@ -11,9 +11,18 @@ public class LogConfiguration {
     private Pattern jsessionIdPattern;
     private Pattern threadPattern;
     private Pattern conversioPattern;
-	private Pattern newLogLinePattern;;
+	private Pattern newLogLinePattern;
+	private Integer threadColumn;
     
-    public Pattern getDatePattern() {
+    public Integer getThreadColumn() {
+		return threadColumn;
+	}
+
+	public void setThreadColumn(Integer threadColumn) {
+		this.threadColumn = threadColumn;
+	}
+
+	public Pattern getDatePattern() {
 		return datePattern;
 	}
 

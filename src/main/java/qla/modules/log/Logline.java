@@ -33,7 +33,7 @@ public class Logline {
 	
 	public String getThread() {
 		String thread = StringUtils
-				.getPartOfStringByPattern(logConfig.getThreadPattern(), source);
+				.getPartOfStringByPattern(logConfig.getThreadPattern(), source, logConfig.getThreadColumn());
 		return StringUtils.removeTailAndLeadParts(thread, "[", "]");
 	}
 	
