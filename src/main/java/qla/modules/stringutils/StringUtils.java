@@ -64,7 +64,7 @@ public class StringUtils {
 			tmp = matcher.group();
 			occurrences.add(tmp);
 		}
-		if (occurrences.size() >= occurrence){
+		if (occurrences.size() > occurrence){
 			partOfString = occurrences.get(occurrence);
 		}
 		return partOfString;
