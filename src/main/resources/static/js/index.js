@@ -637,7 +637,7 @@ var commands = {
 }
 
 var app = {
-  SERVER_URL: "ws://localhost:6565/myHandler",
+  SERVER_URL: "ws://"+location.host+"/myHandler",
   socket: null,
 
   establishConnection: function () {
