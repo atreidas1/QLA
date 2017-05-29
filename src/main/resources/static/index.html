@@ -31,6 +31,7 @@
       <ul class="nav navbar-nav">
         <li class="active"><a href="#home" data-toggle="tab">Main</a></li>
         <li><a href="#servers" id="servers-tab" data-toggle="tab">Servers</a></li>
+        <li><a href="#soap" id="soap-tab" data-toggle="tab">Soap</a></li>
         <li><a href="#settings" id="settings-tab" data-toggle="tab">Settings</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -156,7 +157,37 @@
       </div>
     </div>
     <div class="tab-pane" id="servers"></div>
-    <div class="tab-pane" id="settings"></div>
+    <div class="tab-pane" id="soap">
+      <div class="left-panel" id="soap-toolbar">
+        <ul class="nav nav-tabs" role="tablist">
+          <li role="presentation" class="active"><a href="#requests" aria-controls="home" role="tab" data-toggle="tab">Requests:</a></li>
+          <li role="presentation"><a href="#requests-lib" aria-controls="profile" role="tab" data-toggle="tab">Requests library:</a></li>
+        </ul>
+        <div class="tab-content">
+          <div role="tabpanel" class="tab-pane active" id="requests">..1111.</div>
+          <div role="tabpanel" class="tab-pane" id="requests-lib">...222</div>
+        </div>
+      </div>
+      <div id="soap-right-panel">
+         <div class="soap-settings">
+          <div class="info-box">
+            <span class="message bold">URL:</span>
+            <input type="text" id="server-url">
+          </div>
+          <div class="info-box">
+            <span class="message bold">Servant:</span>
+            <input type="text" id="server-url">
+          </div>
+          <div class="info-box">
+            <span class="message bold">System:</span>
+            <select name="system" id="sytem">
+              <option value="TDP">TDP</option>
+            </select>
+          </div>
+         </div>
+         <textarea name="" id="test" cols="30" rows="10" wrap="soft"></textarea>
+      </div>
+    </div>
   </div>
   <div id="alert-box">
 
@@ -202,11 +233,14 @@
   <script src="js/index.js"></script>
   <script>
     $("#main-toolbar").height($(window).height() - 72);
+    $("#soap-toolbar").height($(window).height() - 72);
     $("#requestsAndResponses").height($(window).height() - 57);
+    $("#soap-right-panel").height($(window).height() - 57);
     $("#source").height($(window).height() - 150);
     $(".scrollable-area").height($(window).height() - 140);
     $("#logfiles").height($(window).height() - 200);
     $(window).resize(function() {
+      $("#soap-toolbar").height($(window).height() - 72);
       $("#main-toolbar").height($(window).height() - 72);
       $("#requestsAndResponses").height($(window).height() - 57);
       $("#source").height($(window).height() - 150);

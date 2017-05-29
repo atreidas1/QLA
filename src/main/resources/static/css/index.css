@@ -95,7 +95,9 @@ body,
   width: 100%;
   border-collapse: collapse;
 }
-#requestsAndResponses {
+#requestsAndResponses,
+#soap-right-panel
+{
   padding-left: 10px;
   padding-right: 4px;
   overflow-y: auto;
@@ -132,7 +134,8 @@ body,
 .system input {
   width: 55px;
 }
-.results {
+.results,
+.soap-settings{
   background-color: #dadada;
   margin-bottom: 5px;
   padding: 5px;
@@ -264,4 +267,11 @@ table.body {
 }
 .exception-in-signal-table{
   background-color: #ffbcff;
+}
+#test{
+  display: block;
+  height: 700px;
+  font-size: 12px;
+  overflow-x: scroll;
+  white-space: nowrap; 
 }
