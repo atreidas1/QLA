@@ -14,8 +14,7 @@ import org.springframework.context.support.FileSystemXmlApplicationContext;
 
 public class AppConfiguration {
 	private static Properties properties;
-	private static String CONFIG_FOLDER = System.getProperty("config.folder");
-	private static String SETTINGS_FILE = CONFIG_FOLDER + File.separator+"config.properties";
+	private static String CONFIG_FOLDER = System.getProperty("config.folder")==null?"D:\\installed\\logAnalyzer\\config":System.getProperty("config.folder");	private static String SETTINGS_FILE = CONFIG_FOLDER + File.separator+"config.properties";
 	
 	public static void init(){
 		try {

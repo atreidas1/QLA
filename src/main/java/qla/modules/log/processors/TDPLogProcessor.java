@@ -51,16 +51,18 @@ public class TDPLogProcessor implements ILogProcessor {
 		LogAnalisationInfo analisationInfo = new LogAnalisationInfo();
 		TreeMap<Integer, LogModel> treeMap = new TreeMap<>();
 		treeMap.putAll(dataForAnalisationInfo);
-		int logModelId = 0;
+		int signalModelId = 0;
+		int exceptionModelId = 0;
 		for (Integer index : treeMap.keySet())
 		{
 			LogModel logModel = treeMap.get(index);
-			logModel.setId(logModelId++);
 			if (logModel.getLogModelType()== LogModel.LogModelType.EXCEPTION_LOG_MODEL) {
 				analisationInfo.addLogExeptionModel((LogExeptionModel) logModel);
+				logModel.setId(signalModelId++);
 			} else if (logModel.getLogModelType()== LogModel.LogModelType.SIGNAL_LOG_MODEL)
 			{
 				analisationInfo.addSignalModel((SignalModel) logModel);
+				logModel.setId(exceptionModelId++);
 			}
 		}
 		return analisationInfo;
