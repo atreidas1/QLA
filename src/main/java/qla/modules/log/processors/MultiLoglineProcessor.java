@@ -14,7 +14,6 @@ public class MultiLoglineProcessor extends SignalLoglineProcessor{
 	protected String getSignalSource(Logline logline, LogFile logFile) {
 		StringBuilder signalSource = new StringBuilder();
 		Logline nextLogline = logline;
-		try {
 			boolean isEnd;
 			do{
 				isEnd = isEnd(nextLogline);
@@ -24,9 +23,7 @@ public class MultiLoglineProcessor extends SignalLoglineProcessor{
 					nextLogline = logFile.nextLogline();
 				} 
 			} while(!isEnd);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+
 		return signalSource.toString();
 	}
 	
