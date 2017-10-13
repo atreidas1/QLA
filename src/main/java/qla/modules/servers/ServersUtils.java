@@ -1,9 +1,6 @@
 package qla.modules.servers;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +18,7 @@ public class ServersUtils {
 		StringBuffer json = new StringBuffer();
 		@SuppressWarnings("resource")
 		BufferedReader br = new BufferedReader(
-				new InputStreamReader(new FileInputStream(System.getProperty("config.folder")+"\\servers.json"), "UTF8"));
+				new InputStreamReader(new FileInputStream(System.getProperty("config.folder")+ File.separator+"servers.json"), "UTF8"));
 		String line;
 		while ((line = br.readLine()) != null) {
 			line = line.trim();

@@ -181,7 +181,7 @@
 	</bean>
 
 	<bean id="amadeusLoglineProcessor" class="qla.modules.log.processors.SignalLoglineProcessor">
-		<property name="conditionPattern" value=".*(Message sent to Amadeus|Message received from Amadeus):.*"></property>
+		<property name="conditionPattern" value="(Message sent to Amadeus|Message received from Amadeus):"></property>
 		<property name="extractPattern" value="&lt;.*&gt;$"></property>
 		<property name="signalNamePattern" value=" Message ([^:]*): "></property>
 		<!--<property name="signalNamePattern" value=" Message (\w*?\w*?) "></property>-->
@@ -193,8 +193,8 @@
 		<property name="system" value="AMADEUS"></property>
 		<property name="actorPattern" value="&lt;eb:Service.*&gt;(\w*?)&lt;/eb:Service&gt;"></property>
 		<property name="contentType" value="XML"></property>
-		<property name="requestPattern" value=".*Message sent to Amadeus:.*"></property>
-		<property name="responsePattern" value=".*Message received from Amadeus:.*"></property>
+		<property name="requestPattern" value="Message sent to Amadeus:"></property>
+		<property name="responsePattern" value="Message received from Amadeus:"></property>
 		<property name="incomingSignalName" value="Request"></property>
 		<property name="outgoingSignalName" value="Response"></property>
 	</bean>

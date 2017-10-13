@@ -14,7 +14,7 @@ public class SignalModel extends LogModel implements Serializable{
 	private String contentType;
 
 	public SignalModel(int id, int line, String rqRsName, String servantName, String source, String errors,
-			String warnings) {
+					   String warnings) {
 		super();
 		signalName = rqRsName;
 		this.service = servantName;

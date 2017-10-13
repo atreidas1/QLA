@@ -5,15 +5,16 @@ import java.io.Serializable;
 public class LogExeptionModel extends LogModel implements Serializable{
 	private static final long serialVersionUID = 7585084426377371752L;
 	private String name;
-	
+
 	public LogExeptionModel(int line, String source, String exceptionName) {
 		super();
 		this.lineNumber = line;
 		this.source = source;
 		this.name = exceptionName;
 	}
-	
+
 	public LogExeptionModel() {
+		setLogModelType(LogModelType.EXCEPTION_LOG_MODEL);
 	}
 
 	public String getName() {

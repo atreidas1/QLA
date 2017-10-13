@@ -30,7 +30,7 @@ public class AppConfiguration {
 	}
 	
 	public static String getProperty(String key) {
-		return properties.getProperty(key);
+		return properties==null?null:properties.getProperty(key);
 	}
 	
 	public static String getProperty(String key, String defaultValue) {
@@ -38,14 +38,14 @@ public class AppConfiguration {
 	}
 	
 	public static void setProperty(String key, String value) {
-		properties.setProperty(key, value);
+		if (properties != null) {
+			properties.setProperty(key, value);
+		}
 	}
 	
 	public static void save(){
 		try {
 			properties.store(new PrintWriter(SETTINGS_FILE), "Application configs");
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

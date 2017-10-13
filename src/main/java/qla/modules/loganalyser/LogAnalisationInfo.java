@@ -14,7 +14,7 @@ public class LogAnalisationInfo implements Serializable{
 	private List<SignalModel> signalModels = new ArrayList<>();
 	private List<LogExeptionModel> exeptionModels =  new ArrayList<>();
 	private List<ErrorLine> errorLines =  new ArrayList<>();
-	
+
 	public List<SignalModel> getSignalModels() {
 		return signalModels;
 	}
@@ -30,39 +30,39 @@ public class LogAnalisationInfo implements Serializable{
 	public SignalModel getSignalModel(int id) {
 		return signalModels.get(id);
 	}
-	
+
 	public LogExeptionModel getLogExeptionModel(int id) {
 		return exeptionModels.get(id);
 	}
-	
+
 	public ErrorLine getLogErrorLine(int id) {
 		return errorLines.get(id);
 	}
-	
-	public LogAnalisationInfo setSignalModel(SignalModel model) {
+
+	public LogAnalisationInfo addSignalModel(SignalModel model) {
 		signalModels.add(model);
 		return this;
 	}
-	
-	public LogAnalisationInfo setLogExeptionModel(LogExeptionModel model) {
+
+	public LogAnalisationInfo addLogExeptionModel(LogExeptionModel model) {
 		model.setId(exeptionModels.size());
 		exeptionModels.add(model);
 		return this;
 	}
-	
+
 	public LogAnalisationInfo setErrorLine(ErrorLine model) {
 		errorLines.add(model);
 		return this;
 	}
-	
+
 	public int getSignalModelsSize() {
 		return signalModels.size();
 	}
-	
+
 	public int getExeptionModelsSize() {
 		return exeptionModels.size();
 	}
-	
+
 	public int getErrorLinesSize() {
 		return errorLines.size();
 	}
@@ -74,5 +74,5 @@ public class LogAnalisationInfo implements Serializable{
 	public void setLogFile(String logFile) {
 		this.logFile = logFile;
 	}
-	
+
 }

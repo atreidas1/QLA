@@ -8,18 +8,31 @@ public class LogModel implements Serializable{
 	protected int lineNumber;
 	protected String source;
 	protected String thread;
-	
+
+	public LogModelType getLogModelType()
+	{
+		return logModelType;
+	}
+
+	public void setLogModelType(LogModelType logModelType)
+	{
+		this.logModelType = logModelType;
+	}
+
+	protected LogModelType logModelType;
+
 	public LogModel() {
 		super();
+		setLogModelType(LogModelType.SIGNAL_LOG_MODEL);
 	}
-	
+
 	public LogModel(int id, int line, String source) {
 		super();
 		this.id = id;
 		this.lineNumber = line;
 		this.source = source;
 	}
-	
+
 	public int getId() {
 		return id;
 	}
@@ -50,6 +63,10 @@ public class LogModel implements Serializable{
 		this.thread = thread;
 		return this;
 	}
-	
-	
+
+
+	public static enum LogModelType
+	{
+		SIGNAL_LOG_MODEL, EXCEPTION_LOG_MODEL
+	}
 }
