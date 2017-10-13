@@ -3,7 +3,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -12,6 +11,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.function.Consumer;
 
+import qla.modules.confuguration.ConcurrencyHelper;
 import qla.modules.log.LogConfiguration;
 import qla.modules.log.LogFile;
 import qla.modules.log.Logline;
@@ -84,8 +84,8 @@ public class TDPLogProcessor implements ILogProcessor {
 																			 Consumer<LogFile> progressBarChangesConsumer)
 	{
 		final Map<Integer,LogModel> dataForAnalisationInfo = new ConcurrentHashMap<>();
-		ExecutorService service = Executors.newFixedThreadPool(4);
-
+		int nThreads = ConcurrencyHelper.getNumberOfCPUCores();
+		ExecutorService service = Executors.newFixedThreadPool(nThreads);
 		for (Logline logLine : logLinesFile)
 		{
 			service.submit(() ->
