@@ -1,13 +1,13 @@
 package qla.modules.confuguration;
 
-import qla.modules.confuguration.AppConfiguration;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
 public class ConcurrencyHelper
 {
+    private static final String N_THREADS_PROPERTY_NAME = "nThreads";
+
     public static void main(String[] args)
     {
         long start = System.currentTimeMillis();
@@ -17,12 +17,15 @@ public class ConcurrencyHelper
 
     public static int getNumberOfCPUCores()
     {
-        String nThreadsPropertyStrValue = AppConfiguration.getProperty("nThreads");
+        String nThreadsPropertyStrValue = AppConfiguration.getProperty(N_THREADS_PROPERTY_NAME);
         if (nThreadsPropertyStrValue!=null){
-            return Integer.parseInt(nThreadsPropertyStrValue);
+            int coresAmount = Integer.parseInt(nThreadsPropertyStrValue);
+            if (coresAmount>0){
+                return coresAmount;
+            }
         }
         int coresAmountFromOS = getCoresAmountFromOS();
-        AppConfiguration.setProperty("nThreads",String.valueOf(coresAmountFromOS));
+        AppConfiguration.setProperty(N_THREADS_PROPERTY_NAME,String.valueOf(coresAmountFromOS));
         return coresAmountFromOS;
     }
 

@@ -76,7 +76,8 @@ public class TDPLogProcessor implements ILogProcessor {
 		System.err.println("File size: " + fileSizeMbs +
 				" mb | Time elapsed " + elapsedTime +
 				" | Performance: " + mbsPerSecond+" mb/s" +
-				" | Completed lines: " + analisationInfo.getSignalModels().size());
+				" | Completed lines: " + analisationInfo.getSignalModels().size()+
+				" | Cores used: "+ConcurrencyHelper.getNumberOfCPUCores());
 	}
 
 	private static Map<Integer, LogModel> getProcessedDataForAnalysationInfo(final LogFile logLinesFile,
