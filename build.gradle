@@ -32,6 +32,7 @@ task copyConfig(type: Copy){
 	from 'config'
 	into 'dist/config'
 	exclude 'run.bat'
+	exclude 'run.sh'
 }
 
 task copyJar(type: Copy){
@@ -44,6 +45,7 @@ task copyRunScript(type: Copy){
 	from 'config'
 	into 'dist'
 	include 'run.bat'
+	include 'run.sh'
 }
 task dist(type: Copy) {
 	
