@@ -7,6 +7,7 @@ public abstract class AbstractActionCommand {
 	private String successAction;
 	private String action;
 	private String message;
+	private String subaction;
 	
 	public String getSuccessAction() {
 		return successAction;
@@ -43,5 +44,11 @@ public abstract class AbstractActionCommand {
 	
 	public void setSession(WebSocketSession session) {
 		this.session = session;
+	}
+	public String getSubaction() {
+		return subaction;
+	}
+	public void setSubaction(String subaction) {
+		this.subaction = subaction;
 	}
 }

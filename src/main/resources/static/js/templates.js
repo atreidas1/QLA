@@ -35,7 +35,6 @@ var templates = {
               '<li><a href="#" ip="{{ip}}" onclick="commands.restartJboss(this)">Restart jboss<a></li>'+
               '<li><a href="#" ip="{{ip}}" onclick="commands.setAccessToJbossLogs(this)">Set access to jboss logs<a></li>'+
               '<li><a href="#" ip="{{ip}}" onclick="commands.runPutty(this)">Run putty<a></li>'+
-              '<li><a href="#" ip="{{ip}}" onclick="commands.executeCommand(this)">Execute command<a></li>'+
             '</ul>'+
           '</div>'+
         '</span>'+
@@ -71,7 +70,7 @@ var templates = {
     '</td>'+
     '<td class="service"><span class="service-name">{{service}}</span></td>'+
     '<td class="system"><span class="system-name">{{system}}</span></td>'+
-    '<td class="action-cell">{{thread}}</td>'+
+    '<td class="action-cell"><span class="thread-name">{{thread}}</span></td>'+
   '</tr>',
 
   EXCEPTION_TEMPLATE:
@@ -94,4 +93,21 @@ var templates = {
     '<td class="system"><span class="system-name"></span></td>'+
     '<td class="action-cell">{{thread}}</td>'+
   '</tr>',
+  
+  OPTION_TEMPLATE: '<option value="{{value}}">{{name}}</option>',
+  
+  SERVER_TASK_TEMPLATE:
+	'<div class="task-box border-bottom display-child-on-hover" task_id="{{id}}">'+
+		'<div class="content-container bg-light-gray">'+
+			'<span class="bold">{{name}}</span>'+
+		'</div>'+
+		'<div class="content-container border-top bg-gray">'+
+		  '<div class="fs-17-px text-end visible-on-parent-hover">'+
+		     '<span onclick="serverModal.tasks.deleteTask({{id}})" class="glyphicon glyphicon-trash"></span>'+
+		     '<span onclick="serverModal.tasks.editTask({{id}})" class="glyphicon glyphicon-pencil"></span>'+
+			 '<span onclick="serverModal.tasks.executeTask({{id}})" class="glyphicon glyphicon-play"></span>'+
+			 '<span onclick="serverModal.tasks.stopTask({{id}})" class="glyphicon glyphicon-stop"></span>'+
+		  '</div>'+
+		'</div>'+
+	'</div>',
 }

@@ -14,12 +14,16 @@ import org.springframework.context.support.FileSystemXmlApplicationContext;
 
 public class AppConfiguration {
 	private static Properties properties;
-	private static String CONFIG_FOLDER = System.getProperty("config.folder");
-	private static String SETTINGS_FILE = CONFIG_FOLDER + File.separator+"config.properties";
+	private static Properties systemProperties;
+	public static final String BASE_FOLDER = System.getProperty("base.folder");
+	private static String CONFIG_FOLDER = BASE_FOLDER + File.separator + "config";
+	private static String SETTINGS_FILE = CONFIG_FOLDER + File.separator + "config.properties";
+	private static String SYSTEM_CONFIG = CONFIG_FOLDER + File.separator + "system.properties";
 	
 	public static void init(){
 		try {
 			properties = new Properties();
+			systemProperties = new Properties();
 			System.out.println("Loading settings file:"+SETTINGS_FILE);
 			properties.load(new FileReader(SETTINGS_FILE));
 			System.out.println("Loading settings beans from file:" + "beans.xml");
@@ -29,12 +33,21 @@ public class AppConfiguration {
 		}
 	}
 	
+	private static String _getProperty(String key) {
+		String value =  properties.getProperty(key);
+		if(value == null ) {
+			value = systemProperties.getProperty(key);
+		}
+		return value;
+	}
+	
 	public static String getProperty(String key) {
-		return properties.getProperty(key);
+		return _getProperty(key);
 	}
 	
 	public static String getProperty(String key, String defaultValue) {
-		return properties.getProperty(key, defaultValue);
+		String value = _getProperty(key);
+		return value == null ? defaultValue : value;
 	}
 	
 	public static void setProperty(String key, String value) {
