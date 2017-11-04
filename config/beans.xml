@@ -26,6 +26,7 @@
 		<entry key="EXECUTE_SSH_COMMAND_ACTION" value-ref="EXECUTE_SSH_COMMAND_ACTION"/>
 		<entry key="LOAD_EXCEPTIONS_ACTION" value-ref="LOAD_EXCEPTIONS_ACTION"/>
 		<entry key="GET_LOG_INFO_ACTION" value-ref="GET_LOG_INFO_ACTION"/>
+		<entry key="SEND_SOAP_ACTION" value-ref="SEND_SOAP_ACTION"/>
 	</util:map>
 	
 	<bean id="selectFolderAction" class="qla.modules.actions.FolderChooserAction">
@@ -77,6 +78,16 @@
 	<bean id="GET_LOG_INFO_ACTION" class="qla.modules.actions.GetLogInfoAction">
 		<constructor-arg type="java.lang.Class" value="qla.modules.actions.models.GetLogInfoActionRQ"></constructor-arg>
 	</bean>
+			
+	<bean id="SEND_SOAP_ACTION" class="qla.modules.actions.SendRequestAction">
+		<constructor-arg type="java.lang.Class" value="qla.modules.actions.models.SendRequestActionRQ"></constructor-arg>
+		<property name="systemParams">
+			<map>
+				<entry key="TDP" value-ref="TDP"/>
+				<entry key="SABRE" value-ref="SABRE"/>
+			</map>
+		</property>
+	</bean>
 	
 	<bean id="LogConfiguration" class="qla.modules.log.LogConfiguration">
 		<property name="encoding" value="UTF-8"></property>
@@ -124,8 +135,8 @@
 		<property name="conditionPattern" value="(Sending to Sabre host|Response from Sabre host) :"></property>
 		<property name="extractPattern" value="&lt;.*&gt;"></property>
 		<property name="signalNamePattern" value="&lt;eb:Action&gt;(\w*?)&lt;/eb:Action&gt;"></property>
-		<property name="warningsPattern" value="&lt;(ns[\d]:)?Warnings.*&lt;/(ns[\d]:)?Warnings&gt;"></property>
-		<property name="errorsPattern" value="(&lt;(ns[\d]:)?Errors.*&lt;/(ns[\d]:)?Errors&gt;|&lt;Error .*/&gt;)"></property>
+		<property name="warningsPattern" value="&lt;([a-z]{0,3}[\d]:)?Warnings.*&lt;/([a-z]{0,3}[\d]:)?Warnings&gt;"></property>
+		<property name="errorsPattern" value="(&lt;([a-z]{0,3}[\d]:)?Errors.*&lt;/([a-z]{0,3}[\d]:)?Errors&gt;|&lt;Error .*/&gt;)"></property>
 		<property name="system" value="SABRE"></property>
 		<property name="actorPattern" value="&lt;eb:Service.*&gt;(\w*?)&lt;/eb:Service&gt;"></property>
 		<property name="contentType" value="XML"></property>
@@ -206,13 +217,38 @@
 			<list>
 				<ref bean="tdpLoglineProcessor"/>
 				<ref bean="sabreLoglineProcessor"/>
-				<ref bean="amadeusLoglineProcessor"/>
+<!-- 				<ref bean="amadeusLoglineProcessor"/> -->
 				<ref bean="exceptionLoglineProcessor"/>
 				<ref bean="aceLoglineProcessor"/>
-				<ref bean="viatorProcessor"/>
-				<ref bean="astralProcessor"/>
+<!-- 				<ref bean="viatorProcessor"/> -->
+<!-- 				<ref bean="astralProcessor"/> -->
 				<ref bean="CUILoglineProcessor"/>
 			</list>
 		</property>
 	</bean>
+	
+	<bean id="TDP" class="qla.modules.soapclient.SystemRequestParameters">
+		<property name="connectTimeout" value="300000"></property>
+		<property name="readTimeout" value="300000"></property>
+		<property name="wrapInEnvelope" value="true"></property>
+		<property name="wrapInAction" value="true"></property>
+		<property name="headers">
+			<map>
+				<entry key="Content-Type" value="text/xml;charset=UTF-8; charset=UTF-8"/>
+			</map>
+		</property>
+	</bean>
+	
+	<bean id="SABRE" class="qla.modules.soapclient.SystemRequestParameters">
+		<property name="connectTimeout" value="300000"></property>
+		<property name="readTimeout" value="300000"></property>
+		<property name="wrapInEnvelope" value="false"></property>
+		<property name="wrapInAction" value="false"></property>
+		<property name="headers">
+			<map>
+				<entry key="Content-Type" value="text/xml;charset=UTF-8; charset=UTF-8"/>
+			</map>
+		</property>
+	</bean>	
 </beans>
+

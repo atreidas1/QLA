@@ -12,7 +12,6 @@
   <link rel="stylesheet" href="./css/bootstrap-3.3.7/css/bootstrap-theme.min.css">
   <link rel="stylesheet" href="css/index.css">
   <link rel="stylesheet" href="css/diagram.css">
-  <link rel="stylesheet" href="css/prism.css">
 </head>
 
 <body>
@@ -31,6 +30,7 @@
       <ul class="nav navbar-nav">
         <li class="active"><a href="#home" data-toggle="tab">Main</a></li>
         <li><a href="#servers" id="servers-tab" data-toggle="tab">Servers</a></li>
+        <li><a href="#soap" id="soap-tab" data-toggle="tab">Soap</a></li>
         <li><a href="#settings" id="settings-tab" data-toggle="tab">Settings</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -143,7 +143,7 @@
               </td>
               <td class="actions bold">
                 <span>Thread</span>
-
+                <input type="text" class="custom-input" filter-name="threadFilter" filter-by=".thread-name" oninput="commands.filter(event)">
               </td>
             </tr>
           </table>
@@ -156,6 +156,40 @@
       </div>
     </div>
     <div class="tab-pane" id="servers"></div>
+    <div class="tab-pane" id="soap">
+      <div id="soap-right-panel">
+         <div class="soap-settings">
+          <div class="info-box">
+            <span class="message bold">URL:</span>
+            <select id="server-url">
+            </select>
+          </div>
+          <div class="info-box">
+            <span class="message bold">Servant:</span>
+            <select id="servant">
+            </select>
+          </div>
+          <div class="info-box">
+            <span class="message bold">System:</span>
+            <select name="system" id="system">
+              <option value="TDP">TDP</option>
+            </select>
+          </div>
+          <div class="info-box">
+            <button class="btn btn-default btn-xs" onclick="commands.sendSOAPRequest()">Send</button>
+            <button class="btn btn-danger btn-xs" onclick="commands.cancelRequest()">Cancel</button>
+          </div>
+         </div>
+          <ul class="nav nav-tabs" role="tablist" id="rq-rs-tabs">
+            <li role="presentation" class="active" class="rq-rs-tab"><a href="#request" aria-controls="home" role="tab" data-toggle="tab">Request:</a></li>
+            <li role="presentation" class="rq-rs-tab"><a href="#response" aria-controls="profile" role="tab" data-toggle="tab">Response:</a></li>
+          </ul>
+          <div class="tab-content">
+            <div role="tabpanel" class="tab-pane active 100-percent-height-textarea" id="request"></div>
+            <div role="tabpanel" class="tab-pane 100-percent-height-textarea" id="response"></div>
+          </div>
+      </div>
+    </div>
     <div class="tab-pane" id="settings"></div>
   </div>
   <div id="alert-box">
@@ -167,9 +201,7 @@
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal">&times;</button>
           <h4 class="modal-title">Signal source</h4>
-          <button title="Select source" class="btn btn-default btn-xs" onclick="commands.selectTextInContainer(event)" container="signal-source-code">
-            <span class="glyphicon glyphicon-copy"></span>
-          </button>
+          <button class="btn btn-default btn-xs" onclick="commands.resendRequest()">Send request</button>
         </div>
         <div class="modal-body">
           <pre id="source" class="language-markup"><code class="language-markup" id="signal-source-code"></code></pre>
@@ -197,23 +229,39 @@
   <script src="libs/jquery.min.js"></script>
   <script src="libs/bootstrap.min.js"></script>
   <script src="libs/diagram.js"></script>
-  <script src="libs/prism.js"></script>
+  <script src="libs/ace.js"></script>
   <script src="js/templates.js"></script>
   <script src="js/index.js"></script>
+  <script src="js/ace_init.js"></script>
+  
   <script>
-    $("#main-toolbar").height($(window).height() - 72);
-    $("#requestsAndResponses").height($(window).height() - 57);
-    $("#source").height($(window).height() - 150);
-    $(".scrollable-area").height($(window).height() - 140);
-    $("#logfiles").height($(window).height() - 200);
+    var windowHeight = $(window).height();
+    $("#main-toolbar").height(windowHeight - 72);
+    $("#soap-toolbar").height(windowHeight - 65);
+    $("#requestsAndResponses").height(windowHeight - 57);
+    $("#soap-table").height(windowHeight - 94);
+    $("#soap-right-panel").height(windowHeight - 57);
+    $("#source").height(windowHeight - 150);
+    $(".scrollable-area").height(windowHeight - 140);
+    $("#logfiles").height(windowHeight - 200);
+    $(".100-percent-height-textarea").height(windowHeight - 178);
+    $("#soap-toolbar div.tab-content").height(windowHeight - 125);
     $(window).resize(function() {
-      $("#main-toolbar").height($(window).height() - 72);
-      $("#requestsAndResponses").height($(window).height() - 57);
-      $("#source").height($(window).height() - 150);
-      $(".scrollable-area").height($(window).height() - 140);
-      $("#logfiles").height($(window).height() - 200);
+      var windowHeight = $(window).height();
+      $("#soap-toolbar").height(windowHeight - 65);
+      $("#main-toolbar").height(windowHeight - 72);
+      $("#requestsAndResponses").height(windowHeight - 57);
+      $("#source").height(windowHeight - 150);
+      $(".scrollable-area").height(windowHeight - 140);
+      $("#logfiles").height(windowHeight - 200);
+      $("#soap-table").height(windowHeight - 57);
+      $("#soap-table").height(windowHeight - 94);
+      $(".100-percent-height-textarea").height(windowHeight - 178);
+      $("#soap-toolbar div.tab-content").height(windowHeight - 125);
+      responseEditor.resize();
+      requesteditor.resize();
+      modalEditor.resize();
     });
-
   </script>
 </body>
 
