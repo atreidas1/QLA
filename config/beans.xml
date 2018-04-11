@@ -96,7 +96,8 @@
 		<property name="loglevelPattern" value="\[(DEBUG|INFO |ERROR|WARN )\]"></property>
 		<property name="fullClassnamePattern" value="\[([a-zA-Z_0-9]{1,}[.]){1,10}[a-zA-Z_0-9]{1,}\]"></property>
 		<property name="jsessionIdPattern" value="\[[A-Z0-9]{32}\]"></property>
-		<property name="threadPattern" value="\[(((?![A-Z0-9]{32})[a-zA-Z_0-9-.\)\(:=\]\[,#]{6,}( CPU_HEAVY){0,1})|(default task-[0-9]{1,4})|(Thread-[0-9]{1,2} \(ActiveMQ-client-global-threads-[0-9]{9}\)))\]"></property>
+		<property name="threadPattern" value="(\[.*?\])"></property>
+		<property name="threadColumn" value="4"></property>
 		<property name="conversationPattern" value="\[([a-zA-Z_0-9]{1,}[.]){1,10}[a-zA-Z_0-9]{1,}\]"></property>
 		<property name="newLoglinePatern" value="^[0-9]{4}-[0-9]{2}-[0-9]{2}"></property>
 	</bean>
