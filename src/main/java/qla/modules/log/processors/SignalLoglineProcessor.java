@@ -1,10 +1,11 @@
 package qla.modules.log.processors;
 
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Pattern;
 
 import qla.modules.log.LogFile;
 import qla.modules.log.Logline;
-import qla.modules.loganalyser.LogAnalisationInfo;
+import qla.modules.loganalyser.models.LogModel;
 import qla.modules.loganalyser.models.SignalModel;
 import qla.modules.stringutils.StringUtils;
 
@@ -24,9 +25,8 @@ public class SignalLoglineProcessor extends AbstractLoglineProcessor {
 	protected String defaultSignalName;
 
 	@Override
-	public void proccess(Logline logline, LogAnalisationInfo info, LogFile logFile) {
+	public LogModel proccess(Logline logline, LogFile logFile) {
 		SignalModel signalModel = new SignalModel();
-		signalModel.setId(info.getSignalModelsSize());
 		signalModel.setLine(logline.getNumber());
 		signalModel.setSystem(system);
 		signalModel.setErrors(getErrors(logline, logFile));
@@ -37,9 +37,9 @@ public class SignalLoglineProcessor extends AbstractLoglineProcessor {
 		signalModel.setServantName(getActorName(logline, logFile));
 		signalModel.setThread(logline.getThread());
 		signalModel.setSource(getSignalSource(logline, logFile));
-		info.setSignalModel(signalModel);
+		return signalModel;
 	}
-	
+
 	protected String getSignalType(Logline logline, LogFile logFile) {
 		if(requestPattern!=null && responsePattern != null) {
 			if(requestPattern.matcher(logline.getSource()).find()){
@@ -50,7 +50,7 @@ public class SignalLoglineProcessor extends AbstractLoglineProcessor {
 		}
 		return "";
 	}
-	
+
 	protected String getActorName(Logline logline, LogFile logFile) {
 		if(actorPattern != null) {
 			return StringUtils.getStringBetveenChars(actorPattern, logline.getSource());
@@ -84,7 +84,7 @@ public class SignalLoglineProcessor extends AbstractLoglineProcessor {
 	protected String getSignalSource(Logline logline, LogFile logFile) {
 		return StringUtils.getPartOfStringByPattern(extractPattern, logline.getSource());
 	}
-	
+
 	public Pattern getRequestPattern() {
 		return requestPattern;
 	}
@@ -115,7 +115,7 @@ public class SignalLoglineProcessor extends AbstractLoglineProcessor {
 	public void setSignalNamePattern(String signalNamePattern) {
 		this.signalNamePattern = Pattern.compile(signalNamePattern, Pattern.DOTALL);
 	}
-	
+
 	public Pattern getActorPattern() {
 		return actorPattern;
 	}
@@ -129,7 +129,7 @@ public class SignalLoglineProcessor extends AbstractLoglineProcessor {
 	public void setSystem(String system) {
 		this.system = system;
 	}
-	
+
 	public String getContentType() {
 		return contentType;
 	}
@@ -137,7 +137,7 @@ public class SignalLoglineProcessor extends AbstractLoglineProcessor {
 	public void setContentType(String contentType) {
 		this.contentType = contentType;
 	}
-	
+
 	public String getIncomingSignalName() {
 		return incomingSignalName;
 	}
@@ -153,7 +153,7 @@ public class SignalLoglineProcessor extends AbstractLoglineProcessor {
 	public void setOutgoingSignalName(String outgoingSignalName) {
 		this.outgoingSignalName = outgoingSignalName;
 	}
-	
+
 	public String getDefaultSignalName() {
 		return defaultSignalName;
 	}

@@ -1,7 +1,9 @@
 var log = console.log;
 var dir = console.dir;
 appData = {
+  isYetSendingRQ : false,
   logfiles: [],
+  config:[]
 }
 
 uiElements = {
@@ -19,8 +21,15 @@ uiElements = {
   progressBar: $("#progress-modal"),
   exceptionsModal: $("#exception-source"),
   signalNameInp: $("#signalInp"),
-  searchContent: $("#searchContent")
-},
+  searchContent: $("#searchContent"),
+  serverUrl: $("#server-url"),
+  servant: $("#servant"),
+  system: $("#system"), 
+  request: $("#request"),
+  response: $("#response"),
+  rqLib: $("#requests-lib"),
+  requests: $("#requests"),
+};
 
 backendActions = {
   SELECT_FOLDER_ACTION : "selectFolder",
@@ -38,9 +47,82 @@ backendActions = {
   RUN_PUTTY_ACTION: "RUN_PUTTY_ACTION",
   EXECUTE_SSH_COMMAND_ACTION: "EXECUTE_SSH_COMMAND_ACTION",
   LOAD_EXCEPTIONS_ACTION: "LOAD_EXCEPTIONS_ACTION",
+  SEND_SOAP_ACTION: "SEND_SOAP_ACTION",
 };
 
 var commands = {
+  openServerModal: function(){
+	  uiElements.serverModal.modal();
+  },
+  
+  resendRequest: function(){
+    requesteditor.setValue(modalEditor.getValue());
+    $('#rq-rs-tabs a[href="#request"]').tab('show');
+    $('a[href="#soap"]').tab('show');
+    uiElements.sourceModal.modal('toggle');
+  },
+  
+  configureSoapTab: function(data){
+	commands.initSelection(uiElements.serverUrl, "URLs");
+	commands.initSelection(uiElements.servant, "servants");
+	commands.initSelection(uiElements.system, "systems");
+  },
+  
+  initSelection: function(uiElement, configKey){
+	  var selectedVal = uiElement.val();
+	  uiElement.empty();
+	  appData.config.find(function(conf){return conf.key == configKey})
+	  .value
+	  .split(",")
+      .sort()
+      .map(function(val){return {name: val, value: val}})
+      .forEach(function(element){
+        commands.renderTemplate(templates.OPTION_TEMPLATE,
+                                element,
+                                uiElement);
+      });
+	  if(selectedVal){
+		  uiElement.val(selectedVal);
+	    }
+  },
+  
+  sendSOAPRequest: function(){
+    if(appData.isYetSendingRQ){
+      commands.displayMessage({message: "Request processing now. Cancel it or wait for response.",
+                              messageType: "danger"});
+    }
+    var rq = {
+      url: uiElements.serverUrl.val(),
+      servant: uiElements.servant.val(),
+      system: uiElements.system.val(),
+      requestSource: requesteditor.getValue(),
+      subaction : "SEND_REQUEST"
+    }
+    app.sendAction(backendActions.SEND_SOAP_ACTION, rq);
+    appData.isYetSendingRQ = true;
+  },
+  
+  cancelRequest: function(){
+    var rq = {
+      subaction : "CANCEL_REQUEST"
+    };
+    app.sendAction(backendActions.SEND_SOAP_ACTION, rq);
+  },
+  
+  requestCanceled: function(data) {
+    appData.isYetSendingRQ = false;
+    responseEditor.setValue("Request canceled.");
+  },
+  
+  requestSended: function(data){
+    $('#rq-rs-tabs a[href="#response"]').tab('show');
+    responseEditor.setValue("Pending response...");
+  },
+  
+  SOAPResponseRecieved: function(data){
+    responseEditor.setValue(data.response);
+    appData.isYetSendingRQ = false;
+  },
   
   showExceptionsInSignalTable: function(data) {
     var exceptions = data.exceptions;
@@ -83,31 +165,6 @@ var commands = {
         parsedfileName: uiElements.signalsTable.attr("parsedfile")
       };
       app.sendAction(backendActions.OPEN_IN_NOTEPAD_ACTION, data);
-  },
-  
-  /*
-  * Select all text in container with id that given in attribute "container"
-  * of button.
-  * For example:
-  * If ve have button:
-  * <button onclick="commands.selectTextInContainer(event)" container="signal-source-code">
-  * Then on click will select all text in container with id="signal-source-code"
-  */
-  selectTextInContainer: function(event) {
-   var doc = document;
-   var element = doc
-   .getElementById(event.currentTarget.getAttribute("container"))
-   if (doc.body.createTextRange) {
-       var range = document.body.createTextRange();
-       range.moveToElementText(element);
-       range.select();
-   } else if (window.getSelection) {
-       var selection = window.getSelection();        
-       var range = document.createRange();
-       range.selectNodeContents(element);
-       selection.removeAllRanges();
-       selection.addRange(range);
-   }
   },
   
   higlightRow: function(event){
@@ -404,19 +461,13 @@ var commands = {
 
   highlightCode: function(source, contentType){
      var mapping = {
-      "JSON" : "language-json",
-      "XML"  : "language-markup",
-      "TEXT" : "language-textile"
+      "JSON" : "json",
+      "XML"  : "xml",
+      "TEXT" : "text"
     };
-    var sourceContainer = $("#signal-source-code");
-    var sourcePre = $("#source");
-    sourceContainer.text("");
-    sourceContainer.text(source);
-    sourceContainer.attr("class", mapping[contentType]);
-    sourcePre.attr("class", mapping[contentType]);
-    if(source.length <= 200000 && contentType) {
-      Prism.highlightElement(sourceContainer[0]);
-    }
+    modalEditor.getSession().setMode("ace/mode/" + mapping[contentType]);
+    modalEditor.setValue(source);
+    modalEditor.gotoLine(0, 1, false);
   },
 
   showSignalWarnings : function(data) {
@@ -500,16 +551,19 @@ var commands = {
 
   start: function(data) {
     this.config();
+    this.loadSettings();
     this.refreshLogFiles();
   },
 
   config: function(data) {
     $("#settings-tab").on("show.bs.tab", this.loadSettings);
     $("#servers-tab").on("show.bs.tab", this.loadServers);
+    $("#requests-tab").on("show.bs.tab", this.loadRequests);
+    $("#requests-lib-tab").on("show.bs.tab", this.loadRqlib);
   },
-
+  
   loadSettings: function(data) {
-    app.sendAction(backendActions.GET_CONFIG_ACTION, {});
+    app.sendAction(backendActions.GET_CONFIG_ACTION,{});
   },
 
   settingsLoaded: function(data) {
@@ -521,8 +575,9 @@ var commands = {
       prop.index = index;
       self.renderTemplate(templates.SETTING_BOX_TEMPLATE, prop, settingsContainer);
     })
+    this.configureSoapTab(data);
   },
-
+  
   renderTemplate: function(template, props, domObj) {
     var src = commands.bindToTemplate(template, props);
     domObj.append($(src));
@@ -591,7 +646,10 @@ var commands = {
     appData.chosedLog = null;
     appData.selectedFileContainer = null;
         app.sendAction(backendActions.SELECT_FOLDER_ACTION,
-                  {subAction: "GET_LOG_FILES", successAction: "updateLogFiles"});
+                  {subAction: "GET_FILES_IN_FOLDER_BY_KEY",
+        	       folderKey: "logfiles.folder",
+        	       successAction: "updateLogFiles",
+        	       includeBaseDir: false});
   },
 
   /**
@@ -633,6 +691,10 @@ var commands = {
       data.messageType = "default";
     }
     this.renderTemplate(templates.NOTIFICATION_TEMPLARE, data, messageBox);
+    setTimeout(function(){
+      messageBox.children().first().find(".close").click();
+    }, 5000);
+
   },
 }
 
@@ -655,12 +717,10 @@ var app = {
   },
 
   onOpen: function(event) {
-    //log(event);
     $("#connection-status-disconnected").attr("id","connection-status-connected");
   },
 
   onRecieve: function(event) {
-    //log(event);
     var object = JSON.parse(event.data);
     commands[object.action](object);
   },

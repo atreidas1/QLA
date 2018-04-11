@@ -14,8 +14,10 @@ import org.springframework.context.support.FileSystemXmlApplicationContext;
 
 public class AppConfiguration {
 	private static Properties properties;
-	private static String CONFIG_FOLDER = System.getProperty("config.folder");
-	private static String SETTINGS_FILE = CONFIG_FOLDER + File.separator+"config.properties";
+	private static Properties systemProperties;
+	public static final String BASE_FOLDER = System.getProperty("base.folder");
+	private static String CONFIG_FOLDER = BASE_FOLDER + File.separator + "config";
+	private static String SETTINGS_FILE = CONFIG_FOLDER + File.separator + "config.properties";
 	
 	public static void init(){
 		try {
@@ -29,23 +31,32 @@ public class AppConfiguration {
 		}
 	}
 	
+	private static String _getProperty(String key) {
+		String value =  properties.getProperty(key);
+		if(value == null ) {
+			value = systemProperties.getProperty(key);
+		}
+		return value;
+	}
+	
 	public static String getProperty(String key) {
-		return properties.getProperty(key);
+		return _getProperty(key);
 	}
 	
 	public static String getProperty(String key, String defaultValue) {
-		return properties.getProperty(key, defaultValue);
+		String value = _getProperty(key);
+		return value == null ? defaultValue : value;
 	}
 	
 	public static void setProperty(String key, String value) {
-		properties.setProperty(key, value);
+		if (properties != null) {
+			properties.setProperty(key, value);
+		}
 	}
 	
 	public static void save(){
 		try {
 			properties.store(new PrintWriter(SETTINGS_FILE), "Application configs");
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

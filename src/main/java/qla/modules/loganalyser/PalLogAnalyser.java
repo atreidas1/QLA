@@ -12,12 +12,12 @@ import qla.modules.loganalyser.models.SignalModel;
 
 public class PalLogAnalyser implements ILogAnalyser{
 	private int lineCounter = 0;
-	
+
 	@Override
 	public File analyseLog(String pathToLogFile, String pathToResultFile, String threadName) throws IOException {
 		LogAnalisationInfo analisationInfo = new LogAnalisationInfo();
 		BufferedReader br = new BufferedReader(new InputStreamReader(
-                new FileInputStream(pathToLogFile), "UTF8"));
+				new FileInputStream(pathToLogFile), "UTF8"));
 		String line = null;
 		while((line = readNextLine(br)) != null){
 			boolean needProcessing = (threadName==null || threadName.isEmpty()) ?
@@ -26,36 +26,36 @@ public class PalLogAnalyser implements ILogAnalyser{
 				String action = defineAction(line);
 				String nextLine = null;
 				switch (action) {
-				case "TDP_REQUEST":
-					processTDPRequest(analisationInfo, br, line);
-					break;
-				case "TDP_RESPONSE":
-					processTDPResponse(analisationInfo, br, line);
-					break;
-				case "SABRE_REQUEST":
-					processSABRERequest(analisationInfo, br, line);
-					break;
-				case "SABRE_RESPONSE":
-					processSABREResponse(analisationInfo, br, line);
-					break;
-				case "EXCEPTION_LINE":
-					nextLine = processExceptionLine(analisationInfo, br, line);
-					break;
-				case "ERROR_LINE":
-					processErrorLine(analisationInfo, br, line);
-					break;
-				default:
+					case "TDP_REQUEST":
+						processTDPRequest(analisationInfo, br, line);
+						break;
+					case "TDP_RESPONSE":
+						processTDPResponse(analisationInfo, br, line);
+						break;
+					case "SABRE_REQUEST":
+						processSABRERequest(analisationInfo, br, line);
+						break;
+					case "SABRE_RESPONSE":
+						processSABREResponse(analisationInfo, br, line);
+						break;
+					case "EXCEPTION_LINE":
+						nextLine = processExceptionLine(analisationInfo, br, line);
+						break;
+					case "ERROR_LINE":
+						processErrorLine(analisationInfo, br, line);
+						break;
+					default:
 				}
 			}
-			
+
 		}
 		br.close();
 		return LogAnalyseInfoSaver.save(analisationInfo, pathToResultFile);
 	}
-	
+
 	private void processErrorLine(LogAnalisationInfo analisationInfo, BufferedReader br, String line) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 
@@ -79,7 +79,7 @@ public class PalLogAnalyser implements ILogAnalyser{
 					}
 				}
 				LogExeptionModel exeptionModel = new LogExeptionModel(lineNumber, builder.toString(), exceptionName);
-				analisationInfo.setLogExeptionModel(exeptionModel);
+				analisationInfo.addLogExeptionModel(exeptionModel);
 			}
 		}
 		return nextLine;
@@ -96,7 +96,7 @@ public class PalLogAnalyser implements ILogAnalyser{
 		SignalModel rqRsModel = readTDPRequestOrResponse(analisationInfo, br, line);
 		rqRsModel.setType("Response");
 		return null;
-		
+
 	}
 
 	void processSABRERequest(LogAnalisationInfo analisationInfo, BufferedReader br, String line) throws IOException {
@@ -129,16 +129,16 @@ public class PalLogAnalyser implements ILogAnalyser{
 		rqRsModel.setErrors(LogAnalyseUtils.getErrors(source));
 		rqRsModel.setWarnings(LogAnalyseUtils.getSabreWarnings(source));
 		rqRsModel.setId(analisationInfo.getSignalModelsSize());
-		analisationInfo.setSignalModel(rqRsModel);
+		analisationInfo.addSignalModel(rqRsModel);
 		return rqRsModel;
 	}
-	
+
 	private SignalModel readTDPRequestOrResponse(LogAnalisationInfo analisationInfo, BufferedReader br, String line) throws IOException{
 		SignalModel rqRsModel = new SignalModel();
 		rqRsModel.setServantName(LogAnalyseUtils.getServantName(line));
 		String request = readNextLine(br);
 		rqRsModel.setId(analisationInfo.getSignalModelsSize());
-		analisationInfo.setSignalModel(rqRsModel);
+		analisationInfo.addSignalModel(rqRsModel);
 		rqRsModel.setLine(lineCounter);
 		rqRsModel.setSource(request);
 		rqRsModel.setErrors(LogAnalyseUtils.getErrors(request));
@@ -169,7 +169,7 @@ public class PalLogAnalyser implements ILogAnalyser{
 		}
 		return "ACTION_NOT_DEFINED";
 	}
-	
+
 	private boolean isItErrorLine(String line) {
 		// TO DO
 		return false;
@@ -182,18 +182,18 @@ public class PalLogAnalyser implements ILogAnalyser{
 	boolean isItTDPRequest(String line) {
 		return line.endsWith("XML Request:");
 	}
-	
+
 	boolean isItTDPResponse(String line){
 		return line.endsWith("XML Response:");
 	}
-	
+
 	boolean isItTSABREResponse(String line){
 		return line.contains("Response from Sabre host :");
 	}
 	boolean isItTSABRERequest(String line){
 		return line.contains("Sending to Sabre host :");
 	}
-    
+
 	String readNextLine(BufferedReader br) throws IOException {
 		lineCounter+=1;
 		return br.readLine();
