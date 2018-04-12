@@ -121,4 +121,10 @@ public class ActionHelper {
 			throw new ActionException(message);
 		}
 	}
+
+	public static String getPathToFolderByKey(String key, boolean includeBaseDir) {
+		return includeBaseDir ?
+			   AppConfiguration.BASE_FOLDER + AppConfiguration.getProperty(key) :
+			    AppConfiguration.getProperty(key);
+	}
 }
